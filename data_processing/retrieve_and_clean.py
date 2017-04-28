@@ -77,4 +77,12 @@ for device in device_info:
     outfile = open(outfileName,'w')
     calling = 'mysql -h ' + hostname + ' --user=' + uname + ' --password=' + password + ' --database powerblade -B -e ' + estring
     call(calling,shell=True,stdout=outfile)
-
+    
+    #now that we have returned from the call let's start a background process to clean it
+    #infileName = outfileName
+    #outfileName = DATA_DIR + "{}_{}.npy".format(id,label)
+    #calling = 'python clean_and_pack.py ' +  infileName + ' ' + outfileName + ' &'
+    #print infileName
+    #print outFileName
+    #print calling
+    #call(calling,shell=True)
