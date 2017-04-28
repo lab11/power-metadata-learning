@@ -18,21 +18,13 @@ retrieved = os.listdir(DATA_DIR)
 
 #parse the filenames
 #id_label_startdate_enddate.tab
-id_retrieved = 0
+id_retrieved = []
 for fileName in retrieved:
+    print fileName
     splits = fileName.split('_');
     id = int(splits[0])
-    id_retrieved = id
+    id_retrieved.append(id)
 
-
-id_to_retrieve = id_retrieved+1
-
-if(id_retrieved == 0):
-    print "Found no data already retrieved - starting from scratch"
-elif(id_retrieved == 1):
-    print "Found data for ID 1".format(id_retrieved)
-else:
-    print "Found data for IDs 1-{}".format(id_retrieved)
 
 #now open the devices file
 device_info = open(DEVICE_FILE,'r')
@@ -41,7 +33,7 @@ for device in device_info:
     id, mac, type, category, room, start, end, label = device.split(',')
     label = label[:-2]
 
-    if(int(id) < id_to_retrieve):
+    if(int(id) in id_retrieved):
         continue
     
     #okay now we need to retrieve the id
