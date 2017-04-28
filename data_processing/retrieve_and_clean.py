@@ -2,10 +2,18 @@ import sys
 import os
 from datetime import datetime, date, timedelta
 from subprocess import call
+import argparse
 
 DATA_DIR = "../data/"
 DEVICE_FILE = "../devices/devices_label_anon.csv"
 PASSWORD_FILE = "password.txt"
+
+parser = argparse.ArgumentParser(description='Process data input files')
+parser.add_argument('--devfile', help='Optional devices file')
+args = parser.parse_args()
+
+if(args.devfile):
+    DEVICE_FILE = args.devfile
 
 passf = open(PASSWORD_FILE,'r')
 uname = passf.readline()[:-1]
@@ -25,7 +33,6 @@ for fileName in retrieved:
     id = int(splits[0])
     id_retrieved.append(id)
 
-
 #now open the devices file
 device_info = open(DEVICE_FILE,'r')
 device_info.readline()
@@ -35,7 +42,7 @@ for device in device_info:
 
     if(int(id) in id_retrieved):
         continue
-    
+
     #okay now we need to retrieve the id
     print "Analyzing data for device {} with label {} ...".format(id,label)
 
@@ -69,7 +76,7 @@ for device in device_info:
     outfile = open(outfileName,'w')
     calling = 'mysql -h ' + hostname + ' --user=' + uname + ' --password=' + password + ' --database powerblade -B -e ' + estring
     call(calling,shell=True,stdout=outfile)
-    
+
     #now that we have returned from the call let's start a background process to clean it
     #infileName = outfileName
     #outfileName = DATA_DIR + "{}_{}.npy".format(id,label)
