@@ -30,14 +30,14 @@ inFileList = os.listdir(args.inputdir[0])
 
 proclist = set()
 for file in inFileList:
-    print "Reordering {}".format(args.inputdir[0]+file)
-    
-    call = ['python','reorder_file.py',args.inputdir[0]+file,args.outputdir[0]+file]
+    outFileName = file[:-3]+"npy"
+   
+    call = ['python','clean_file.py',args.inputdir[0]+file,args.outputdir[0]+outFileName]
     p = subprocess.Popen(call)
     proclist.add(p.pid)
-
+    
 while proclist:
     pid,retval = os.wait()
     proclist.remove(pid)
 
-print "Finished reordering processes!"
+print "Finished all cleaning process!"
