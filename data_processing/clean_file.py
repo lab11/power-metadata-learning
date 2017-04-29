@@ -8,7 +8,7 @@
 import numpy as np
 import sys
 import argparse
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 
 parser = argparse.ArgumentParser(description='Process data input files')
@@ -44,16 +44,16 @@ if(time_start.hour == 0 and time_start.minute == 0):
 	pass
 	end_start_day = time_start
 else:
-	day_time = time_start.day
-	end_start_day = time_start.replace(day=day_time+1,hour=0,minute=0,second=0) 
+	time_start_copy = time_start + timedelta(days=1)
+	end_start_day = time_start_copy.replace(hour=0,minute=0,second=0) 
 
 #round the end time down to
 end_end_day = None
 if(time_end.hour == 23 and time_end.minute == 59 and time_end.second >50):
 	end_end_day = time_end.replace(second=59)
 else:
-	day_time = time_end.day
-	end_end_day= time_end.replace(day=day_time-1,hour=23,minute=59,second=59) 
+	time_end_copy = time_end - timedelta(days=1)
+	end_end_day = time_end_copy.replace(hour=23,minute=59,second=59) 
 
 #now subtract the two days
 difference = end_end_day - end_start_day
