@@ -28,6 +28,8 @@ if(os.path.abspath(args.inputdir[0]) == os.path.abspath(args.outputdir[0])):
 inFileList = os.listdir(args.inputdir[0])
 
 for file in inFileList:
+    print "Reordering {}".format(args.inputdir[0]+file)
+
     #open the input file
     infile = open(args.inputdir[0]+file,'r')
     
