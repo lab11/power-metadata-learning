@@ -11,6 +11,7 @@ import os
 import argparse
 from datetime import datetime, date
 import subprocess
+import glob
 
 
 parser = argparse.ArgumentParser(description='Process data input files')
@@ -31,13 +32,32 @@ inFileList = os.listdir(args.inputdir[0])
 proclist = set()
 for file in inFileList:
     outFileName = file[:-3]+"npy"
+    id = outFileName.split('_')[0]
    
-    call = ['python','clean_file.py',args.inputdir[0]+file,args.outputdir[0]+outFileName]
+    call = ['python','clean_file.py',args.inputdir[0]+file,args.outputdir[0]+outFileName,id]
     p = subprocess.Popen(call)
     proclist.add(p.pid)
     
 while proclist:
-    pid,retval = os.wait()
+    try:
+        pid,retval = os.wait()
+    except:
+        #just assume this means were done
+        break
+
     proclist.remove(pid)
+
+print "Consolidating reports into single file.."
+
+reportList = glob.glob(args.outputdir[0] + "*.rpt")
+creport = open("cleaning_report.rpt",'w')
+creport.write("ID,days,percent_interpolated,percent_off,percent_skipped\n")
+
+for r in reportList:
+    rep = open(r,'r')
+    line = rep.readline()
+    creport.write(line)
+    rep.close()
+    os.remove(r)
 
 print "Finished all cleaning process!"

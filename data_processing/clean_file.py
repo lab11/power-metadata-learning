@@ -16,11 +16,15 @@ parser.add_argument('inputfile', metavar='I', type=str, nargs='+',
                     help='input file to parse')
 parser.add_argument('outputfile', metavar='O', type=str, nargs='+',
                     help='output file to save')
+parser.add_argument('id', metavar='O', type=int, nargs='+',
+                    help='id of device')
 
 args = parser.parse_args()
 
 #open the input file
+reportFname = args.outputfile[0][:-3] + 'rpt'
 infile = open(args.inputfile[0],'r')
+report = open(reportFname,'w')
 
 #figure out how long the input file is to create a numpy array for it
 infile.readline()
@@ -54,6 +58,7 @@ else:
 #now subtract the two days
 difference = end_end_day - end_start_day
 size_of_array = difference.total_seconds() + 1
+
 
 print "Cleaning {} days of data from {} to {}".format(difference.days,end_start_day.strftime("%Y-%m-%d %H:%M:%S"),end_end_day.strftime("%Y-%m-%d %H:%M:%S"))
 print "{} total data points".format(size_of_array)
@@ -141,3 +146,4 @@ print "Off {} data points".format(off)
 print "Skipped {} data points".format(skipped)
 np.save(args.outputfile[0],array_to_store)	
 
+report.write("{},{},{}%,{}%,{}%\n".format(args.id[0],difference.days,int(float(interpolated)/size_of_array*100),int(float(off)/size_of_array*100),int(float(skipped)/size_of_array*100)))
