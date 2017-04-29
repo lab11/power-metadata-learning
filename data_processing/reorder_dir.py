@@ -10,6 +10,7 @@ import sys
 import os
 import argparse
 from datetime import datetime, date
+import subprocess
 
 
 parser = argparse.ArgumentParser(description='Process data input files')
@@ -27,29 +28,11 @@ if(os.path.abspath(args.inputdir[0]) == os.path.abspath(args.outputdir[0])):
 #get a list of all files in input directory
 inFileList = os.listdir(args.inputdir[0])
 
+proclist = []
 for file in inFileList:
     print "Reordering {}".format(args.inputdir[0]+file)
+    
+    proclist.append(subprocess.Popen('python reorder_file.py ' + args.inputdir[0]+file+ ' ' + args.outputdir[0]+file + ' &', shell=True))
 
-    #open the input file
-    infile = open(args.inputdir[0]+file,'r')
-    
-    #open the output file
-    outfile = open(args.outputdir[0]+file,'w')
-    outfile.write(infile.readline())
-    
-    last_line = infile.readline()
-    for line in infile:
-        last_seq,last_time,p,pf = last_line.split('\t')
-    	seq,time,power,pf = line.split('\t')
-    
-        if(time == last_time):
-            if(seq < last_seq):
-                outfile.write(line)
-            else:
-                outfile.write(last_line)
-                last_line = line
-        else:
-            outfile.write(last_line)
-            last_line = line
-    
-    outfile.write(last_line)
+for proc in proclist:
+    proc.wait()
