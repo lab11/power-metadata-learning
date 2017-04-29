@@ -1,13 +1,7 @@
 deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
-1,c098e5700180,Blender,Other Kitchen,Kitchen,2017-02-23 00:00:00,2017-04-27 23:59:59,Blender
 2,c098e5700201,Blender,Other Kitchen,Kitchen,2017-03-14 00:00:00,2017-04-22 23:59:59,Blender
-3,c098e570020c,Blender,Other Kitchen,Kitchen,2017-04-05 00:00:00,2017-04-17 23:59:59,Blender
 4,c098e5700262,Blender,Other Kitchen,Kitchen,2017-03-20 00:00:00,2017-04-17 23:59:59,Blender
-5,c098e5700264,Blender,Other Kitchen,Kitchen,2017-03-27 00:00:00,2017-04-19 23:59:59,Blender
-6,c098e5700076,Food processor,Kitchen,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Blender
-7,c098e57000EA,Food processor,Other Kitchen,Kitchen,2017-01-13 00:00:00,2017-04-27 23:59:59,Blender
 8,c098e570027e,Food processor,Other Kitchen,Kitchen,2017-03-10 00:00:00,2017-04-17 23:59:59,Blender
-9,c098e570002d,Blowdryer,Bathroom,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Blowdryer
 10,c098e570006B,Blowdryer,Bathroom,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Blowdryer
 11,c098e570016F,Blowdryer,Bathroom,Bathroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Blowdryer
 12,c098e5700184,Blowdryer,Bathroom,Living Room,2017-02-23 00:00:00,2017-04-27 23:59:59,Blowdryer
@@ -57,7 +51,6 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 56,c098e5700074,Curling iron,Bathroom,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,CurlingIron-Straightener
 57,c098e57001AE,Curling iron,Bathroom,Bedroom 2,2017-02-26 00:00:00,2017-04-27 23:59:59,CurlingIron-Straightener
 58,c098e57001f2,Curling iron,Bathroom,Bathroom 2,2017-03-14 00:00:00,2017-04-22 23:59:59,CurlingIron-Straightener
-59,c098e5700236,Curling iron,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-18 23:59:59,CurlingIron-Straightener
 60,c098e5700257,Curling iron,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-19 23:59:59,CurlingIron-Straightener
 61,c098e570027b,Curling iron,Bathroom,Bathroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,CurlingIron-Straightener
 62,c098e5700282,Curling iron,Bathroom,Bathroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,CurlingIron-Straightener
@@ -70,9 +63,6 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 69,c098e570010B,Desktop computer,Computer,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,DesktopComputer
 70,c098e570017D,Desktop computer,Computer,Mobile,2017-02-26 00:00:00,2017-04-27 23:59:59,DesktopComputer
 71,c098e57001c1,Desktop computer,Computer,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,DesktopComputer
-72,c098e5700181,Disposal,Other Kitchen,Kitchen,2017-02-23 00:00:00,2017-04-27 23:59:59,Disposal
-73,c098e570020f,Disposal,Other Kitchen,Kitchen,2017-03-14 00:00:00,2017-04-22 23:59:59,Disposal
-74,c098e570023b,Disposal,Other Kitchen,Kitchen,2017-03-27 00:00:00,2017-04-18 23:59:59,Disposal
 75,c098e57000E6,DVD-Blu Ray Player,Entertainment,Living Room,2017-02-26 00:00:00,2017-04-27 23:59:59,DVD-BluRayPlayer
 76,c098e5700189,DVD-Blu Ray Player,Entertainment,Living Room,2017-02-23 00:00:00,2017-04-27 23:59:59,DVD-BluRayPlayer
 77,c098e570021a,DVD-Blu Ray Player,Entertainment,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,DVD-BluRayPlayer
@@ -96,9 +86,7 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 95,c098e5700030,Xbox,Entertainment,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Gaming
 96,c098e5700087,Xbox,Entertainment,Kitchen,2016-12-20 00:00:00,2016-12-26 23:59:59,Gaming
 97,c098e570015e,Xbox,Entertainment,Living Room,2017-02-11 00:00:00,2017-04-17 23:59:59,Gaming
-98,c098e5700035,Laptop computer,Computer,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,LaptopComputer
 99,c098e5700055,Laptop Computer,Computer,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,LaptopComputer
-100,c098e570006F,Laptop Computer,Computer,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,LaptopComputer
 101,c098e57000CD,Laptop Computer,Computer,Living Room,2017-01-13 00:00:00,2017-04-27 23:59:59,LaptopComputer
 102,c098e5700161,Laptop Computer,Computer,Mobile,2017-02-26 00:00:00,2017-04-27 23:59:59,LaptopComputer
 103,c098e570016E,Laptop Computer,Computer,Bedroom 2,2017-02-23 00:00:00,2017-04-27 23:59:59,LaptopComputer
@@ -168,22 +156,13 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 167,c098e5700238,Microwave,Other Kitchen,Kitchen,2017-03-27 00:00:00,2017-04-18 23:59:59,Microwave
 168,c098e570025f,Microwave,Other Kitchen,Kitchen,2017-03-27 00:00:00,2017-04-19 23:59:59,Microwave
 169,c098e5700284,Microwave,Other Kitchen,Kitchen,2017-03-10 00:00:00,2017-04-17 23:59:59,Microwave
-170,c098e57000EE,Mixer,Other Kitchen,Kitchen,2017-01-13 00:00:00,2017-04-27 23:59:59,Mixer
 171,c098e5700182,Mixer,Other Kitchen,Kitchen,2017-02-23 00:00:00,2017-04-27 23:59:59,Mixer
 172,c098e5700199,Mixer,Other Kitchen,Kitchen,2017-02-26 00:00:00,2017-04-27 23:59:59,Mixer
 173,c098e5700203,Mixer,Other Kitchen,Kitchen,2017-04-05 00:00:00,2017-04-17 23:59:59,Mixer
-174,c098e5700085,Phone,Networking-Communication,Dining Room,2016-12-20 00:00:00,2016-12-26 23:59:59,Phone
-175,c098e57000fc,Phone,Networking-Communication,Study,2016-07-22 00:00:00,2017-01-05 23:59:59,Phone
-176,c098e5700134,Phone,Networking-Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Phone
 177,c098e5700039,Phone charger,Other,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,PhoneCharger
-178,c098e570003E,Phone charger,Other,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,PhoneCharger
 179,c098e5700052,Phone charger,Other,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,PhoneCharger
 180,c098e5700054,Phone charger,Other,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,PhoneCharger
-181,c098e5700075,Phone charger,Other,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,PhoneCharger
-182,c098e57000E8,Phone charger,Phone charger,Living Room,2017-01-13 00:00:00,2017-04-27 23:59:59,PhoneCharger
 183,c098e57000EC,Phone charger,Phone charger,Bedroom 1,2017-01-13 00:00:00,2017-04-27 23:59:59,PhoneCharger
-184,c098e570010E,Phone charger,Phone charger,Bedroom 3,2016-07-22 00:00:00,2017-01-05 23:59:59,PhoneCharger
-185,c098e5700118,Phone charger,Phone charger,Bedroom 3,2016-07-22 00:00:00,2017-01-05 23:59:59,PhoneCharger
 186,c098e5700143,Phone charger,Phone charger,Living Room,2017-02-26 00:00:00,2017-04-27 23:59:59,PhoneCharger
 187,c098e570017F,Phone charger,Phone charger,Bedroom 2,2017-02-23 00:00:00,2017-04-27 23:59:59,PhoneCharger
 188,c098e57001A0,Phone charger,Phone charger,Bedroom 1,2017-02-26 00:00:00,2017-04-27 23:59:59,PhoneCharger
@@ -232,11 +211,7 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 231,c098e570019d,Switch,Networking-Communication,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,Router-Modem-Switch
 232,c098e57001bf,Switch,Networking-Communication,Bedroom 1,2017-03-10 00:00:00,2017-04-17 23:59:59,Router-Modem-Switch
 233,c098e57001f6,Switch,Networking-Communication,Living Room,2017-03-24 00:00:00,2017-04-17 23:59:59,Router-Modem-Switch
-234,c098e570004C,Shredder,Printer-Shredder,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Shredder
-235,c098e57000E3,Shredder,Printer-Shredder,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Shredder
-236,c098e57001f4,Shredder,Printer-Shredder,Bedroom 2,2017-03-24 00:00:00,2017-04-17 23:59:59,Shredder
 237,c098e5700009,Speaker,Entertainment,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Speaker
-238,c098e5700051,Speaker,Entertainment,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Speaker
 239,c098e57000D1,Speaker,Entertainment,Living Room,2017-01-13 00:00:00,2017-04-27 23:59:59,Speaker
 240,c098e57000f5,Speaker,Entertainment,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Speaker
 241,c098e5700160,Speaker,Entertainment,Mobile,2017-02-26 00:00:00,2017-04-27 23:59:59,Speaker
@@ -279,6 +254,3 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 278,c098e5700100,Vacuum,Vacuum,Mobile,2017-01-13 00:00:00,2017-04-27 23:59:59,Vacuum
 279,c098e5700192,Vacuum,Vacuum,Mobile,2017-02-26 00:00:00,2017-04-27 23:59:59,Vacuum
 280,c098e570025c,Vacuum,Vacuum,Mobile,2017-03-27 00:00:00,2017-04-17 23:59:59,Vacuum
-281,c098e570005B,Washer,Laundry,Laundry Room,2016-12-20 00:00:00,2016-12-26 23:59:59,Washer
-282,c098e57001AB,Washer,Laundry,Basement,2017-02-26 00:00:00,2017-04-27 23:59:59,Washer
-283,c098e57001fb,Washer,Laundry,Study,2017-03-14 00:00:00,2017-04-22 23:59:59,Washer
