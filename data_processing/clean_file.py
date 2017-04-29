@@ -59,8 +59,7 @@ else:
 difference = end_end_day - end_start_day
 size_of_array = difference.total_seconds() + 1
 
-
-print "Cleaning {} days of data from {} to {}".format(difference.days,end_start_day.strftime("%Y-%m-%d %H:%M:%S"),end_end_day.strftime("%Y-%m-%d %H:%M:%S"))
+print "Cleaning ID {} with {} days of data from {} to {}".format(args.id,difference.days,end_start_day.strftime("%Y-%m-%d %H:%M:%S"),end_end_day.strftime("%Y-%m-%d %H:%M:%S"))
 print "{} total data points".format(size_of_array)
 
 #make a numpy array
