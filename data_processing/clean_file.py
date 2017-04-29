@@ -38,28 +38,19 @@ time2 = line[-1].split('\t')[1]
 time_start = datetime.strptime(time1,"%Y-%m-%d %H:%M:%S")
 time_end = datetime.strptime(time2,"%Y-%m-%d %H:%M:%S")
 
-end_start_day = None
-#round the first day up to midnight
-if(time_start.hour == 0 and time_start.minute == 0):
-	pass
-	end_start_day = time_start
-else:
-	time_start_copy = time_start + timedelta(days=1)
-	end_start_day = time_start_copy.replace(hour=0,minute=0,second=0) 
+#round the first day back to midnight
+end_start_day = time_start.replace(hour = 0, minute = 0, second = 0)
 
-#round the end time down to
-end_end_day = None
-if(time_end.hour == 23 and time_end.minute == 59 and time_end.second >50):
-	end_end_day = time_end.replace(second=59)
-else:
-	time_end_copy = time_end - timedelta(days=1)
-	end_end_day = time_end_copy.replace(hour=23,minute=59,second=59) 
+#round the end time up to the second before midnight
+end_end_day = time_end.replace(hour=23,minute=59,second=59)
 
 #now subtract the two days
 difference = end_end_day - end_start_day
 size_of_array = difference.total_seconds() + 1
 
-print "Cleaning ID {} with {} days of data from {} to {}".format(args.id,difference.days,end_start_day.strftime("%Y-%m-%d %H:%M:%S"),end_end_day.strftime("%Y-%m-%d %H:%M:%S"))
+daysdiff = difference + timedelta(seconds=1)
+
+print "Cleaning ID {} with {} days of data from {} to {}".format(args.id,daysdiff.days,end_start_day.strftime("%Y-%m-%d %H:%M:%S"),end_end_day.strftime("%Y-%m-%d %H:%M:%S"))
 print "{} total data points".format(size_of_array)
 
 #make a numpy array
@@ -73,17 +64,20 @@ infile.readline()
 last_time = None
 last_seq = None
 it = 0
-for line in infile:
-	seq,time,power,pf = line.split('\t')
-	time = datetime.strptime(time,"%Y-%m-%d %H:%M:%S")
-	if(time >= end_start_day):
-		last_time = time
-                last_seq = int(seq)
-		array_to_store[it,0] = float(power)
-		array_to_store[it,1] = float(pf)
-		it = it+1
-		break
 
+seq,time,power,pf = infile.readline().split('\t')
+time = datetime.strptime(time,"%Y-%m-%d %H:%M:%S")
+
+td = timedelta(seconds=0)
+
+while(end_start_day + td < time):
+    td = td + timedelta(seconds=1)
+    it = it+1
+
+last_time = time
+last_seq = int(seq)
+array_to_store[it,0] = float(power)
+array_to_store[it,1] = float(pf)
 
 interpolated = 0
 off = 0
