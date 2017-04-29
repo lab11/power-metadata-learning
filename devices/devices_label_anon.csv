@@ -34,37 +34,37 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 33,c098e5700226,Coffee maker,Other Kitchen,Kitchen,2017-03-27 00:00:00,2017-04-18 23:59:59,Coffee Maker
 34,c098e5700267,Coffee maker,Other Kitchen,Kitchen,2017-03-27 00:00:00,2017-04-19 23:59:59,Coffee Maker
 35,c098e5700285,Coffee maker,Other Kitchen,Kitchen,2017-03-10 00:00:00,2017-04-17 23:59:59,Coffee Maker
-36,c098e570004F,Computer Monitor,Screen/Display,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Computer Monitor
-37,c098e570006D,Computer Monitor,Screen/Display,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Computer Monitor
-38,c098e57000BD,Computer Monitor,Screen/Display,Bedroom 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
-39,c098e57000C5,Computer Monitor,Screen/Display,Bedroom 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
-40,c098e57000D4,Computer Monitor,Screen/Display,Bedroom 2,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
-41,c098e57000D6,Computer Monitor,Screen/Display,Bedroom 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
-42,c098e57000D8,Computer Monitor,Screen/Display,Bedroom 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
-43,c098e57000ea,Computer Monitor,Screen/Display,NULL,2016-10-17 00:00:00,2017-01-05 23:59:59,Computer Monitor
-44,c098e57000eb,Computer Monitor,Screen/Display,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
-45,c098e57000f0,Computer Monitor,Screen/Display,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
-46,c098e57000f6,Computer Monitor,Screen/Display,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
-47,c098e57000f9,Computer Monitor,Screen/Display,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
-48,c098e57000fb,Computer Monitor,Screen/Display,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
-49,c098e5700108,Computer Monitor,Screen/Display,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
-50,c098e5700136,Computer Monitor,Screen/Display,Bedroom 2,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
-51,c098e5700138,Computer Monitor,Screen/Display,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
-52,c098e5700169,Computer Monitor,Screen/Display,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Computer Monitor
-53,c098e57001c5,Computer Monitor,Screen/Display,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,Computer Monitor
-54,c098e57001c8,Computer Monitor,Screen/Display,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,Computer Monitor
-55,c098e570006A,Curling iron,Bathroom,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Curling iron/Straightener
-56,c098e5700074,Curling iron,Bathroom,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Curling iron/Straightener
-57,c098e57001AE,Curling iron,Bathroom,Bedroom 2,2017-02-26 00:00:00,2017-04-27 23:59:59,Curling iron/Straightener
-58,c098e57001f2,Curling iron,Bathroom,Bathroom 2,2017-03-14 00:00:00,2017-04-22 23:59:59,Curling iron/Straightener
-59,c098e5700236,Curling iron,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-18 23:59:59,Curling iron/Straightener
-60,c098e5700257,Curling iron,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-19 23:59:59,Curling iron/Straightener
-61,c098e570027b,Curling iron,Bathroom,Bathroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,Curling iron/Straightener
-62,c098e5700282,Curling iron,Bathroom,Bathroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,Curling iron/Straightener
-63,c098e5700172,Straightener,Bathroom,Bathroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Curling iron/Straightener
-64,c098e5700196,Straightener,Bathroom,Bedroom 2,2017-02-26 00:00:00,2017-04-27 23:59:59,Curling iron/Straightener
-65,c098e5700237,Straightener,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-18 23:59:59,Curling iron/Straightener
-66,c098e5700259,Straightener,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-19 23:59:59,Curling iron/Straightener
+36,c098e570004F,Computer Monitor,Screen-Display,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Computer Monitor
+37,c098e570006D,Computer Monitor,Screen-Display,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Computer Monitor
+38,c098e57000BD,Computer Monitor,Screen-Display,Bedroom 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
+39,c098e57000C5,Computer Monitor,Screen-Display,Bedroom 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
+40,c098e57000D4,Computer Monitor,Screen-Display,Bedroom 2,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
+41,c098e57000D6,Computer Monitor,Screen-Display,Bedroom 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
+42,c098e57000D8,Computer Monitor,Screen-Display,Bedroom 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
+43,c098e57000ea,Computer Monitor,Screen-Display,NULL,2016-10-17 00:00:00,2017-01-05 23:59:59,Computer Monitor
+44,c098e57000eb,Computer Monitor,Screen-Display,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
+45,c098e57000f0,Computer Monitor,Screen-Display,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
+46,c098e57000f6,Computer Monitor,Screen-Display,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
+47,c098e57000f9,Computer Monitor,Screen-Display,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
+48,c098e57000fb,Computer Monitor,Screen-Display,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
+49,c098e5700108,Computer Monitor,Screen-Display,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
+50,c098e5700136,Computer Monitor,Screen-Display,Bedroom 2,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
+51,c098e5700138,Computer Monitor,Screen-Display,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Computer Monitor
+52,c098e5700169,Computer Monitor,Screen-Display,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Computer Monitor
+53,c098e57001c5,Computer Monitor,Screen-Display,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,Computer Monitor
+54,c098e57001c8,Computer Monitor,Screen-Display,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,Computer Monitor
+55,c098e570006A,Curling iron,Bathroom,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Curling iron-Straightener
+56,c098e5700074,Curling iron,Bathroom,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Curling iron-Straightener
+57,c098e57001AE,Curling iron,Bathroom,Bedroom 2,2017-02-26 00:00:00,2017-04-27 23:59:59,Curling iron-Straightener
+58,c098e57001f2,Curling iron,Bathroom,Bathroom 2,2017-03-14 00:00:00,2017-04-22 23:59:59,Curling iron-Straightener
+59,c098e5700236,Curling iron,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-18 23:59:59,Curling iron-Straightener
+60,c098e5700257,Curling iron,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-19 23:59:59,Curling iron-Straightener
+61,c098e570027b,Curling iron,Bathroom,Bathroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,Curling iron-Straightener
+62,c098e5700282,Curling iron,Bathroom,Bathroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,Curling iron-Straightener
+63,c098e5700172,Straightener,Bathroom,Bathroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Curling iron-Straightener
+64,c098e5700196,Straightener,Bathroom,Bedroom 2,2017-02-26 00:00:00,2017-04-27 23:59:59,Curling iron-Straightener
+65,c098e5700237,Straightener,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-18 23:59:59,Curling iron-Straightener
+66,c098e5700259,Straightener,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-19 23:59:59,Curling iron-Straightener
 67,c098e5700050,Desktop computer,Computer,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Desktop computer
 68,c098e57000C9,Desktop computer,Computer,Bedroom 2,2016-07-22 00:00:00,2017-01-05 23:59:59,Desktop computer
 69,c098e570010B,Desktop computer,Computer,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Desktop computer
@@ -73,10 +73,10 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 72,c098e5700181,Disposal,Other Kitchen,Kitchen,2017-02-23 00:00:00,2017-04-27 23:59:59,Disposal
 73,c098e570020f,Disposal,Other Kitchen,Kitchen,2017-03-14 00:00:00,2017-04-22 23:59:59,Disposal
 74,c098e570023b,Disposal,Other Kitchen,Kitchen,2017-03-27 00:00:00,2017-04-18 23:59:59,Disposal
-75,c098e57000E6,DVD/Blu Ray Player,Entertainment,Living Room,2017-02-26 00:00:00,2017-04-27 23:59:59,DVD/Blu Ray Player
-76,c098e5700189,DVD/Blu Ray Player,Entertainment,Living Room,2017-02-23 00:00:00,2017-04-27 23:59:59,DVD/Blu Ray Player
-77,c098e570021a,DVD/Blu Ray Player,Entertainment,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,DVD/Blu Ray Player
-78,c098e5700224,DVD/Blu Ray Player,Entertainment,Living Room,2017-03-27 00:00:00,2017-04-18 23:59:59,DVD/Blu Ray Player
+75,c098e57000E6,DVD-Blu Ray Player,Entertainment,Living Room,2017-02-26 00:00:00,2017-04-27 23:59:59,DVD-Blu Ray Player
+76,c098e5700189,DVD-Blu Ray Player,Entertainment,Living Room,2017-02-23 00:00:00,2017-04-27 23:59:59,DVD-Blu Ray Player
+77,c098e570021a,DVD-Blu Ray Player,Entertainment,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,DVD-Blu Ray Player
+78,c098e5700224,DVD-Blu Ray Player,Entertainment,Living Room,2017-03-27 00:00:00,2017-04-18 23:59:59,DVD-Blu Ray Player
 79,c098e5700174,Air filter,Fan,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Fan
 80,c098e5700173,Fan,Fan,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Fan
 81,c098e570019E,Fan,Fan,Bedroom 1,2017-02-26 00:00:00,2017-04-27 23:59:59,Fan
@@ -127,20 +127,20 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 126,c098e5700193,Exterior lighting,Lighting,Kitchen,2017-02-26 00:00:00,2017-04-27 23:59:59,Light
 127,c098e5700195,Exterior lighting,Lighting,Study,2017-02-26 00:00:00,2017-04-27 23:59:59,Light
 128,c098e570020d,Exterior lighting,Lighting,Porch,2017-03-27 00:00:00,2017-04-18 23:59:59,Light
-129,c098e5700066,Small lamp/light,Lighting,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Light
-130,c098e5700082,Small lamp/light,Lighting,Living Room,2016-12-20 00:00:00,2016-12-26 23:59:59,Light
-131,c098e57000C6,Small lamp/light,Lighting,Bedroom 2,2016-07-22 00:00:00,2017-01-05 23:59:59,Light
-132,c098e570019b,Small lamp/light,Lighting,Bathroom 1,2017-03-10 00:00:00,2017-04-17 23:59:59,Light
-133,c098e57001b2,Small lamp/light,Lighting,Bedroom 1,2017-03-10 00:00:00,2017-04-17 23:59:59,Light
-134,c098e57001ec,Small lamp/light,Lighting,Bedroom 1,2017-03-14 00:00:00,2017-04-22 23:59:59,Light
-135,c098e57001ee,Small lamp/light,Lighting,Bedroom 2,2017-03-24 00:00:00,2017-04-17 23:59:59,Light
-136,c098e57001f0,Small lamp/light,Lighting,Bedroom 1,2017-03-14 00:00:00,2017-04-22 23:59:59,Light
-137,c098e57001f7,Small lamp/light,Lighting,Bedroom 2,2017-03-14 00:00:00,2017-04-22 23:59:59,Light
-138,c098e57001f9,Small lamp/light,Lighting,Bedroom 2,2017-03-14 00:00:00,2017-04-22 23:59:59,Light
-139,c098e5700213,Small lamp/light,Lighting,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,Light
-140,c098e5700233,Small lamp/light,Lighting,Bathroom 1,2017-03-27 00:00:00,2017-04-18 23:59:59,Light
-141,c098e5700235,Small lamp/light,Lighting,Bedroom 1,2017-03-27 00:00:00,2017-04-18 23:59:59,Light
-142,c098e5700266,Small lamp/light,Lighting,Living Room,2017-03-27 00:00:00,2017-04-19 23:59:59,Light
+129,c098e5700066,Small lamp-light,Lighting,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Light
+130,c098e5700082,Small lamp-light,Lighting,Living Room,2016-12-20 00:00:00,2016-12-26 23:59:59,Light
+131,c098e57000C6,Small lamp-light,Lighting,Bedroom 2,2016-07-22 00:00:00,2017-01-05 23:59:59,Light
+132,c098e570019b,Small lamp-light,Lighting,Bathroom 1,2017-03-10 00:00:00,2017-04-17 23:59:59,Light
+133,c098e57001b2,Small lamp-light,Lighting,Bedroom 1,2017-03-10 00:00:00,2017-04-17 23:59:59,Light
+134,c098e57001ec,Small lamp-light,Lighting,Bedroom 1,2017-03-14 00:00:00,2017-04-22 23:59:59,Light
+135,c098e57001ee,Small lamp-light,Lighting,Bedroom 2,2017-03-24 00:00:00,2017-04-17 23:59:59,Light
+136,c098e57001f0,Small lamp-light,Lighting,Bedroom 1,2017-03-14 00:00:00,2017-04-22 23:59:59,Light
+137,c098e57001f7,Small lamp-light,Lighting,Bedroom 2,2017-03-14 00:00:00,2017-04-22 23:59:59,Light
+138,c098e57001f9,Small lamp-light,Lighting,Bedroom 2,2017-03-14 00:00:00,2017-04-22 23:59:59,Light
+139,c098e5700213,Small lamp-light,Lighting,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,Light
+140,c098e5700233,Small lamp-light,Lighting,Bathroom 1,2017-03-27 00:00:00,2017-04-18 23:59:59,Light
+141,c098e5700235,Small lamp-light,Lighting,Bedroom 1,2017-03-27 00:00:00,2017-04-18 23:59:59,Light
+142,c098e5700266,Small lamp-light,Lighting,Living Room,2017-03-27 00:00:00,2017-04-19 23:59:59,Light
 143,c098e5700002,Standing lamp,Lighting,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Light
 144,c098e5700047,Standing lamp,Lighting,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Light
 145,c098e570005E,Standing lamp,Lighting,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Light
@@ -172,9 +172,9 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 171,c098e5700182,Mixer,Other Kitchen,Kitchen,2017-02-23 00:00:00,2017-04-27 23:59:59,Mixer
 172,c098e5700199,Mixer,Other Kitchen,Kitchen,2017-02-26 00:00:00,2017-04-27 23:59:59,Mixer
 173,c098e5700203,Mixer,Other Kitchen,Kitchen,2017-04-05 00:00:00,2017-04-17 23:59:59,Mixer
-174,c098e5700085,Phone,Networking/Communication,Dining Room,2016-12-20 00:00:00,2016-12-26 23:59:59,Phone
-175,c098e57000fc,Phone,Networking/Communication,Study,2016-07-22 00:00:00,2017-01-05 23:59:59,Phone
-176,c098e5700134,Phone,Networking/Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Phone
+174,c098e5700085,Phone,Networking-Communication,Dining Room,2016-12-20 00:00:00,2016-12-26 23:59:59,Phone
+175,c098e57000fc,Phone,Networking-Communication,Study,2016-07-22 00:00:00,2017-01-05 23:59:59,Phone
+176,c098e5700134,Phone,Networking-Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Phone
 177,c098e5700039,Phone charger,Other,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Phone Charger
 178,c098e570003E,Phone charger,Other,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Phone Charger
 179,c098e5700052,Phone charger,Other,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Phone Charger
@@ -195,10 +195,10 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 194,c098e5700260,Phone charger,Phone charger,Bedroom 1,2017-03-27 00:00:00,2017-04-19 23:59:59,Phone Charger
 195,c098e570026a,Phone charger,Phone charger,Living Room,2017-03-27 00:00:00,2017-04-19 23:59:59,Phone Charger
 196,c098e5700280,Phone charger,Phone charger,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,Phone Charger
-197,c098e570003C,Printer,Printer/Shredder,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Printer
-198,c098e57000F3,Printer,Printer/Shredder,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Printer
-199,c098e5700186,Printer,Printer/Shredder,Hallway 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Printer
-200,c098e5700198,Printer,Printer/Shredder,Bedroom 2,2017-03-24 00:00:00,2017-04-17 23:59:59,Printer
+197,c098e570003C,Printer,Printer-Shredder,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Printer
+198,c098e57000F3,Printer,Printer-Shredder,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Printer
+199,c098e5700186,Printer,Printer-Shredder,Hallway 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Printer
+200,c098e5700198,Printer,Printer-Shredder,Bedroom 2,2017-03-24 00:00:00,2017-04-17 23:59:59,Printer
 201,c098e57000C7,Fridge,Fridge,Kitchen,2016-07-22 00:00:00,2017-01-05 23:59:59,Refrigerator
 202,c098e57000ED,Fridge,Fridge,Kitchen,2017-01-13 00:00:00,2017-04-27 23:59:59,Refrigerator
 203,c098e570016D,Fridge,Fridge,Kitchen,2017-02-23 00:00:00,2017-04-27 23:59:59,Refrigerator
@@ -209,32 +209,32 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 208,c098e570027d,Fridge,Fridge,Kitchen,2017-03-10 00:00:00,2017-04-17 23:59:59,Refrigerator
 209,c098e5700012,Fridge,Kitchen,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Refrigerator
 210,c098e5700191,Other,Other Kitchen,Study,2017-02-26 00:00:00,2017-04-27 23:59:59,Refrigerator
-211,c098e570006B,Modem,Networking/Communication,Living Room,2017-01-13 00:00:00,2017-04-27 23:59:59,Router/Modem/Switch
-212,c098e570010D,Modem,Networking/Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Router/Modem/Switch
-213,c098e5700163,Modem,Networking/Communication,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Router/Modem/Switch
-214,c098e5700164,Modem,Networking/Communication,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Router/Modem/Switch
-215,c098e57001bb,Modem,Networking/Communication,Living Room,2017-03-10 00:00:00,2017-04-17 23:59:59,Router/Modem/Switch
-216,c098e5700219,Modem,Networking/Communication,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,Router/Modem/Switch
-217,c098e5700220,Modem,Networking/Communication,Living Room,2017-03-27 00:00:00,2017-04-18 23:59:59,Router/Modem/Switch
-218,c098e5700269,Modem,Networking/Communication,Living Room,2017-03-27 00:00:00,2017-04-19 23:59:59,Router/Modem/Switch
-219,c098e57001f5,Other,Networking/Communication,Bedroom 2,2017-03-24 00:00:00,2017-04-17 23:59:59,Router/Modem/Switch
-220,c098e570003D,Router,Networking/Communication,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Router/Modem/Switch
-221,c098e5700104,Router,Networking/Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Router/Modem/Switch
-222,c098e5700115,Router,Networking/Communication,Living Room,2017-01-13 00:00:00,2017-04-27 23:59:59,Router/Modem/Switch
-223,c098e5700167,Router,Networking/Communication,Kitchen,2017-02-23 00:00:00,2017-04-27 23:59:59,Router/Modem/Switch
-224,c098e570016A,Router,Networking/Communication,Living Room,2017-02-26 00:00:00,2017-04-27 23:59:59,Router/Modem/Switch
-225,c098e5700214,Router,Networking/Communication,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,Router/Modem/Switch
-226,c098e5700053,Switch,Networking/Communication,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Router/Modem/Switch
-227,c098e570005B,Switch,Networking/Communication,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Router/Modem/Switch
-228,c098e5700107,Switch,Networking/Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Router/Modem/Switch
-229,c098e5700116,Switch,Networking/Communication,Bedroom 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Router/Modem/Switch
-230,c098e5700119,Switch,Networking/Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Router/Modem/Switch
-231,c098e570019d,Switch,Networking/Communication,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,Router/Modem/Switch
-232,c098e57001bf,Switch,Networking/Communication,Bedroom 1,2017-03-10 00:00:00,2017-04-17 23:59:59,Router/Modem/Switch
-233,c098e57001f6,Switch,Networking/Communication,Living Room,2017-03-24 00:00:00,2017-04-17 23:59:59,Router/Modem/Switch
-234,c098e570004C,Shredder,Printer/Shredder,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Shredder
-235,c098e57000E3,Shredder,Printer/Shredder,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Shredder
-236,c098e57001f4,Shredder,Printer/Shredder,Bedroom 2,2017-03-24 00:00:00,2017-04-17 23:59:59,Shredder
+211,c098e570006B,Modem,Networking-Communication,Living Room,2017-01-13 00:00:00,2017-04-27 23:59:59,Router-Modem-Switch
+212,c098e570010D,Modem,Networking-Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Router-Modem-Switch
+213,c098e5700163,Modem,Networking-Communication,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Router-Modem-Switch
+214,c098e5700164,Modem,Networking-Communication,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Router-Modem-Switch
+215,c098e57001bb,Modem,Networking-Communication,Living Room,2017-03-10 00:00:00,2017-04-17 23:59:59,Router-Modem-Switch
+216,c098e5700219,Modem,Networking-Communication,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,Router-Modem-Switch
+217,c098e5700220,Modem,Networking-Communication,Living Room,2017-03-27 00:00:00,2017-04-18 23:59:59,Router-Modem-Switch
+218,c098e5700269,Modem,Networking-Communication,Living Room,2017-03-27 00:00:00,2017-04-19 23:59:59,Router-Modem-Switch
+219,c098e57001f5,Other,Networking-Communication,Bedroom 2,2017-03-24 00:00:00,2017-04-17 23:59:59,Router-Modem-Switch
+220,c098e570003D,Router,Networking-Communication,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Router-Modem-Switch
+221,c098e5700104,Router,Networking-Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Router-Modem-Switch
+222,c098e5700115,Router,Networking-Communication,Living Room,2017-01-13 00:00:00,2017-04-27 23:59:59,Router-Modem-Switch
+223,c098e5700167,Router,Networking-Communication,Kitchen,2017-02-23 00:00:00,2017-04-27 23:59:59,Router-Modem-Switch
+224,c098e570016A,Router,Networking-Communication,Living Room,2017-02-26 00:00:00,2017-04-27 23:59:59,Router-Modem-Switch
+225,c098e5700214,Router,Networking-Communication,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,Router-Modem-Switch
+226,c098e5700053,Switch,Networking-Communication,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Router-Modem-Switch
+227,c098e570005B,Switch,Networking-Communication,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Router-Modem-Switch
+228,c098e5700107,Switch,Networking-Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Router-Modem-Switch
+229,c098e5700116,Switch,Networking-Communication,Bedroom 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Router-Modem-Switch
+230,c098e5700119,Switch,Networking-Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Router-Modem-Switch
+231,c098e570019d,Switch,Networking-Communication,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,Router-Modem-Switch
+232,c098e57001bf,Switch,Networking-Communication,Bedroom 1,2017-03-10 00:00:00,2017-04-17 23:59:59,Router-Modem-Switch
+233,c098e57001f6,Switch,Networking-Communication,Living Room,2017-03-24 00:00:00,2017-04-17 23:59:59,Router-Modem-Switch
+234,c098e570004C,Shredder,Printer-Shredder,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Shredder
+235,c098e57000E3,Shredder,Printer-Shredder,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Shredder
+236,c098e57001f4,Shredder,Printer-Shredder,Bedroom 2,2017-03-24 00:00:00,2017-04-17 23:59:59,Shredder
 237,c098e5700009,Speaker,Entertainment,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Speaker
 238,c098e5700051,Speaker,Entertainment,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Speaker
 239,c098e57000D1,Speaker,Entertainment,Living Room,2017-01-13 00:00:00,2017-04-27 23:59:59,Speaker
@@ -254,18 +254,18 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 253,c098e570018A,Other,Entertainment,Living Room,2017-02-23 00:00:00,2017-04-27 23:59:59,Streaming dongle
 254,c098e57001b0,Other,Entertainment,Bedroom 1,2017-03-10 00:00:00,2017-04-17 23:59:59,Streaming dongle
 255,c098e5700268,Other,Entertainment,Living Room,2017-03-27 00:00:00,2017-04-19 23:59:59,Streaming dongle
-256,c098e570003B,Television,Screen/Display,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Television
-257,c098e570005d,Television,Screen/Display,Living Room,2017-03-07 00:00:00,2017-04-17 23:59:59,Television
-258,c098e5700066,Television,Screen/Display,Kitchen,2016-12-20 00:00:00,2016-12-26 23:59:59,Television
-259,c098e57000bb,Television,Screen/Display,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Television
-260,c098e57000CE,Television,Screen/Display,Living Room,2017-01-13 00:00:00,2017-04-27 23:59:59,Television
-261,c098e57000DA,Television,Screen/Display,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Television
-262,c098e57000e6,Television,Screen/Display,Study,2016-07-22 00:00:00,2017-01-05 23:59:59,Television
-263,c098e5700176,Television,Screen/Display,Living Room,2017-02-26 00:00:00,2017-04-27 23:59:59,Television
-264,c098e57001b3,Television,Screen/Display,Bedroom 1,2017-03-10 00:00:00,2017-04-17 23:59:59,Television
-265,c098e5700215,Television,Screen/Display,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,Television
-266,c098e5700222,Television,Screen/Display,Living Room,2017-03-27 00:00:00,2017-04-18 23:59:59,Television
-267,c098e5700265,Television,Screen/Display,Living Room,2017-03-27 00:00:00,2017-04-19 23:59:59,Television
+256,c098e570003B,Television,Screen-Display,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Television
+257,c098e570005d,Television,Screen-Display,Living Room,2017-03-07 00:00:00,2017-04-17 23:59:59,Television
+258,c098e5700066,Television,Screen-Display,Kitchen,2016-12-20 00:00:00,2016-12-26 23:59:59,Television
+259,c098e57000bb,Television,Screen-Display,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Television
+260,c098e57000CE,Television,Screen-Display,Living Room,2017-01-13 00:00:00,2017-04-27 23:59:59,Television
+261,c098e57000DA,Television,Screen-Display,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Television
+262,c098e57000e6,Television,Screen-Display,Study,2016-07-22 00:00:00,2017-01-05 23:59:59,Television
+263,c098e5700176,Television,Screen-Display,Living Room,2017-02-26 00:00:00,2017-04-27 23:59:59,Television
+264,c098e57001b3,Television,Screen-Display,Bedroom 1,2017-03-10 00:00:00,2017-04-17 23:59:59,Television
+265,c098e5700215,Television,Screen-Display,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,Television
+266,c098e5700222,Television,Screen-Display,Living Room,2017-03-27 00:00:00,2017-04-18 23:59:59,Television
+267,c098e5700265,Television,Screen-Display,Living Room,2017-03-27 00:00:00,2017-04-19 23:59:59,Television
 268,c098e5700068,Toaster,Kitchen,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Toaster
 269,c098e570006E,Toaster,Kitchen,Kitchen,2016-12-20 00:00:00,2016-12-26 23:59:59,Toaster
 270,c098e57000C1,Toaster,Other Kitchen,Kitchen,2016-07-22 00:00:00,2017-01-05 23:59:59,Toaster
