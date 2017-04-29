@@ -47,7 +47,6 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 52,c098e5700169,Computer Monitor,Screen-Display,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,ComputerMonitor
 53,c098e57001c5,Computer Monitor,Screen-Display,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,ComputerMonitor
 54,c098e57001c8,Computer Monitor,Screen-Display,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,ComputerMonitor
-55,c098e570006A,Curling iron,Bathroom,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,CurlingIron-Straightener
 56,c098e5700074,Curling iron,Bathroom,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,CurlingIron-Straightener
 57,c098e57001AE,Curling iron,Bathroom,Bedroom 2,2017-02-26 00:00:00,2017-04-27 23:59:59,CurlingIron-Straightener
 58,c098e57001f2,Curling iron,Bathroom,Bathroom 2,2017-03-14 00:00:00,2017-04-22 23:59:59,CurlingIron-Straightener
