@@ -41,4 +41,7 @@ for dataFile in dataFiles:
     else:
         print "Warning: No label for {}".format(dataFile)
 
-print dataFileDict
+print "Found following data files:"
+
+for key in dataFileDict:
+    print "{}: {} files".format(key,len(dataFileDict[key]))
