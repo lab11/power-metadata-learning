@@ -26,7 +26,6 @@ args = parser.parse_args()
 #read the labels file and make a dict of lists
 labelFile = open(args.labelFile[0],'r')
 labels = labelFile.readline().strip().split(',')
-print labels
 
 dataFileDict = {}
 for label in labels:
@@ -40,9 +39,9 @@ for dataFile in dataFiles:
     if(label in dataFileDict):
         dataFileDict[label].append(dataFile)
     else:
-        print "Warning: No label for {}".format(dataFile)
+        print("Warning: No label for {}".format(dataFile))
 
-print "Found following data files:"
+print("Found following data files:")
 
 for key in dataFileDict:
-    print "{}: {} files".format(key,len(dataFileDict[key]))
+    print("{}: {} files".format(key,len(dataFileDict[key])))
