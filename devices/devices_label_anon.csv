@@ -47,25 +47,25 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 52,c098e5700169,Computer Monitor,Screen-Display,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,ComputerMonitor
 53,c098e57001c5,Computer Monitor,Screen-Display,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,ComputerMonitor
 54,c098e57001c8,Computer Monitor,Screen-Display,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,ComputerMonitor
-56,c098e5700074,Curling iron,Bathroom,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,CurlingIron-Straightener
-57,c098e57001AE,Curling iron,Bathroom,Bedroom 2,2017-02-26 00:00:00,2017-04-27 23:59:59,CurlingIron-Straightener
-58,c098e57001f2,Curling iron,Bathroom,Bathroom 2,2017-03-14 00:00:00,2017-04-22 23:59:59,CurlingIron-Straightener
-60,c098e5700257,Curling iron,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-19 23:59:59,CurlingIron-Straightener
-61,c098e570027b,Curling iron,Bathroom,Bathroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,CurlingIron-Straightener
-62,c098e5700282,Curling iron,Bathroom,Bathroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,CurlingIron-Straightener
-63,c098e5700172,Straightener,Bathroom,Bathroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,CurlingIron-Straightener
-64,c098e5700196,Straightener,Bathroom,Bedroom 2,2017-02-26 00:00:00,2017-04-27 23:59:59,CurlingIron-Straightener
-65,c098e5700237,Straightener,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-18 23:59:59,CurlingIron-Straightener
-66,c098e5700259,Straightener,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-19 23:59:59,CurlingIron-Straightener
+56,c098e5700074,Curling iron,Bathroom,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,CurlingIronStraightener
+57,c098e57001AE,Curling iron,Bathroom,Bedroom 2,2017-02-26 00:00:00,2017-04-27 23:59:59,CurlingIronStraightener
+58,c098e57001f2,Curling iron,Bathroom,Bathroom 2,2017-03-14 00:00:00,2017-04-22 23:59:59,CurlingIronStraightener
+60,c098e5700257,Curling iron,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-19 23:59:59,CurlingIronStraightener
+61,c098e570027b,Curling iron,Bathroom,Bathroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,CurlingIronStraightener
+62,c098e5700282,Curling iron,Bathroom,Bathroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,CurlingIronStraightener
+63,c098e5700172,Straightener,Bathroom,Bathroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,CurlingIronStraightener
+64,c098e5700196,Straightener,Bathroom,Bedroom 2,2017-02-26 00:00:00,2017-04-27 23:59:59,CurlingIronStraightener
+65,c098e5700237,Straightener,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-18 23:59:59,CurlingIronStraightener
+66,c098e5700259,Straightener,Bathroom,Bathroom 1,2017-03-27 00:00:00,2017-04-19 23:59:59,CurlingIronStraightener
 67,c098e5700050,Desktop computer,Computer,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,DesktopComputer
 68,c098e57000C9,Desktop computer,Computer,Bedroom 2,2016-07-22 00:00:00,2017-01-05 23:59:59,DesktopComputer
 69,c098e570010B,Desktop computer,Computer,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,DesktopComputer
 70,c098e570017D,Desktop computer,Computer,Mobile,2017-02-26 00:00:00,2017-04-27 23:59:59,DesktopComputer
 71,c098e57001c1,Desktop computer,Computer,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,DesktopComputer
-75,c098e57000E6,DVD-Blu Ray Player,Entertainment,Living Room,2017-02-26 00:00:00,2017-04-27 23:59:59,DVD-BluRayPlayer
-76,c098e5700189,DVD-Blu Ray Player,Entertainment,Living Room,2017-02-23 00:00:00,2017-04-27 23:59:59,DVD-BluRayPlayer
-77,c098e570021a,DVD-Blu Ray Player,Entertainment,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,DVD-BluRayPlayer
-78,c098e5700224,DVD-Blu Ray Player,Entertainment,Living Room,2017-03-27 00:00:00,2017-04-18 23:59:59,DVD-BluRayPlayer
+75,c098e57000E6,DVD-Blu Ray Player,Entertainment,Living Room,2017-02-26 00:00:00,2017-04-27 23:59:59,DVDBluRayPlayer
+76,c098e5700189,DVD-Blu Ray Player,Entertainment,Living Room,2017-02-23 00:00:00,2017-04-27 23:59:59,DVDBluRayPlayer
+77,c098e570021a,DVD-Blu Ray Player,Entertainment,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,DVDBluRayPlayer
+78,c098e5700224,DVD-Blu Ray Player,Entertainment,Living Room,2017-03-27 00:00:00,2017-04-18 23:59:59,DVDBluRayPlayer
 79,c098e5700174,Air filter,Fan,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Fan
 80,c098e5700173,Fan,Fan,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Fan
 81,c098e570019E,Fan,Fan,Bedroom 1,2017-02-26 00:00:00,2017-04-27 23:59:59,Fan
@@ -187,29 +187,29 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 208,c098e570027d,Fridge,Fridge,Kitchen,2017-03-10 00:00:00,2017-04-17 23:59:59,Refrigerator
 209,c098e5700012,Fridge,Kitchen,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Refrigerator
 210,c098e5700191,Other,Other Kitchen,Study,2017-02-26 00:00:00,2017-04-27 23:59:59,Refrigerator
-211,c098e570006B,Modem,Networking-Communication,Living Room,2017-01-13 00:00:00,2017-04-27 23:59:59,Router-Modem-Switch
-212,c098e570010D,Modem,Networking-Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Router-Modem-Switch
-213,c098e5700163,Modem,Networking-Communication,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Router-Modem-Switch
-214,c098e5700164,Modem,Networking-Communication,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,Router-Modem-Switch
-215,c098e57001bb,Modem,Networking-Communication,Living Room,2017-03-10 00:00:00,2017-04-17 23:59:59,Router-Modem-Switch
-216,c098e5700219,Modem,Networking-Communication,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,Router-Modem-Switch
-217,c098e5700220,Modem,Networking-Communication,Living Room,2017-03-27 00:00:00,2017-04-18 23:59:59,Router-Modem-Switch
-218,c098e5700269,Modem,Networking-Communication,Living Room,2017-03-27 00:00:00,2017-04-19 23:59:59,Router-Modem-Switch
-219,c098e57001f5,Other,Networking-Communication,Bedroom 2,2017-03-24 00:00:00,2017-04-17 23:59:59,Router-Modem-Switch
-220,c098e570003D,Router,Networking-Communication,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Router-Modem-Switch
-221,c098e5700104,Router,Networking-Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Router-Modem-Switch
-222,c098e5700115,Router,Networking-Communication,Living Room,2017-01-13 00:00:00,2017-04-27 23:59:59,Router-Modem-Switch
-223,c098e5700167,Router,Networking-Communication,Kitchen,2017-02-23 00:00:00,2017-04-27 23:59:59,Router-Modem-Switch
-224,c098e570016A,Router,Networking-Communication,Living Room,2017-02-26 00:00:00,2017-04-27 23:59:59,Router-Modem-Switch
-225,c098e5700214,Router,Networking-Communication,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,Router-Modem-Switch
-226,c098e5700053,Switch,Networking-Communication,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Router-Modem-Switch
-227,c098e570005B,Switch,Networking-Communication,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Router-Modem-Switch
-228,c098e5700107,Switch,Networking-Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Router-Modem-Switch
-229,c098e5700116,Switch,Networking-Communication,Bedroom 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Router-Modem-Switch
-230,c098e5700119,Switch,Networking-Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,Router-Modem-Switch
-231,c098e570019d,Switch,Networking-Communication,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,Router-Modem-Switch
-232,c098e57001bf,Switch,Networking-Communication,Bedroom 1,2017-03-10 00:00:00,2017-04-17 23:59:59,Router-Modem-Switch
-233,c098e57001f6,Switch,Networking-Communication,Living Room,2017-03-24 00:00:00,2017-04-17 23:59:59,Router-Modem-Switch
+211,c098e570006B,Modem,Networking-Communication,Living Room,2017-01-13 00:00:00,2017-04-27 23:59:59,RouterModemSwitch
+212,c098e570010D,Modem,Networking-Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,RouterModemSwitch
+213,c098e5700163,Modem,Networking-Communication,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,RouterModemSwitch
+214,c098e5700164,Modem,Networking-Communication,Bedroom 1,2017-02-23 00:00:00,2017-04-27 23:59:59,RouterModemSwitch
+215,c098e57001bb,Modem,Networking-Communication,Living Room,2017-03-10 00:00:00,2017-04-17 23:59:59,RouterModemSwitch
+216,c098e5700219,Modem,Networking-Communication,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,RouterModemSwitch
+217,c098e5700220,Modem,Networking-Communication,Living Room,2017-03-27 00:00:00,2017-04-18 23:59:59,RouterModemSwitch
+218,c098e5700269,Modem,Networking-Communication,Living Room,2017-03-27 00:00:00,2017-04-19 23:59:59,RouterModemSwitch
+219,c098e57001f5,Other,Networking-Communication,Bedroom 2,2017-03-24 00:00:00,2017-04-17 23:59:59,RouterModemSwitch
+220,c098e570003D,Router,Networking-Communication,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,RouterModemSwitch
+221,c098e5700104,Router,Networking-Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,RouterModemSwitch
+222,c098e5700115,Router,Networking-Communication,Living Room,2017-01-13 00:00:00,2017-04-27 23:59:59,RouterModemSwitch
+223,c098e5700167,Router,Networking-Communication,Kitchen,2017-02-23 00:00:00,2017-04-27 23:59:59,RouterModemSwitch
+224,c098e570016A,Router,Networking-Communication,Living Room,2017-02-26 00:00:00,2017-04-27 23:59:59,RouterModemSwitch
+225,c098e5700214,Router,Networking-Communication,Living Room,2017-03-14 00:00:00,2017-04-22 23:59:59,RouterModemSwitch
+226,c098e5700053,Switch,Networking-Communication,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,RouterModemSwitch
+227,c098e570005B,Switch,Networking-Communication,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,RouterModemSwitch
+228,c098e5700107,Switch,Networking-Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,RouterModemSwitch
+229,c098e5700116,Switch,Networking-Communication,Bedroom 1,2016-07-22 00:00:00,2017-01-05 23:59:59,RouterModemSwitch
+230,c098e5700119,Switch,Networking-Communication,Basement,2016-07-22 00:00:00,2017-01-05 23:59:59,RouterModemSwitch
+231,c098e570019d,Switch,Networking-Communication,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,RouterModemSwitch
+232,c098e57001bf,Switch,Networking-Communication,Bedroom 1,2017-03-10 00:00:00,2017-04-17 23:59:59,RouterModemSwitch
+233,c098e57001f6,Switch,Networking-Communication,Living Room,2017-03-24 00:00:00,2017-04-17 23:59:59,RouterModemSwitch
 237,c098e5700009,Speaker,Entertainment,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Speaker
 239,c098e57000D1,Speaker,Entertainment,Living Room,2017-01-13 00:00:00,2017-04-27 23:59:59,Speaker
 240,c098e57000f5,Speaker,Entertainment,Hallway 1,2016-07-22 00:00:00,2017-01-05 23:59:59,Speaker
