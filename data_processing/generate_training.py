@@ -25,7 +25,8 @@ args = parser.parse_args()
 
 #read the labels file and make a dict of lists
 labelFile = open(args.labelFile[0],'r')
-labels = labelFile.readline().split(',')
+labels = labelFile.readline().strip().split(',')
+print labels
 
 dataFileDict = {}
 for label in labels:
