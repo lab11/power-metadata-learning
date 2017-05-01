@@ -105,7 +105,7 @@ def main(_):
   y = tf.multiply(y_pre_weight,tf.cast(class_weights,tf.float32))
 
   #now calculate cross entropy on weighted inputs
-  cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_,logits=y))
+  cross_entropy = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y_,logits=y))
 
   train_step = tf.train.AdamOptimizer(1e-3).minimize(cross_entropy)
   correct = tf.equal(tf.argmax(y,1),tf.argmax(y_,1))
