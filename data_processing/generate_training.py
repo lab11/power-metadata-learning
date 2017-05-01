@@ -67,15 +67,12 @@ for key in labelToFilenames:
         devices.append(device)
         numPoints += device.shape[0]
     numTries = 0
-    while numTries < 10:
+    while numTries < 20:
         pick = np.random.choice(numFiles, int(np.ceil(numFiles * unseenTestRatio)), False)
         unseenDevices = list(devices[i] for i in pick)
         unseenNumPoints = 0
         for device in unseenDevices:
             unseenNumPoints += device.shape[0]
-        print(unseenNumPoints)
-        print(numPoints)
-        print()
         if unseenNumPoints/numPoints > (unseenTestRatio - .1) and \
             unseenNumPoints/numPoints < (unseenTestRatio + .1):
             labelToUnseen[key] = unseenDevices
@@ -84,7 +81,7 @@ for key in labelToFilenames:
                 del labelToTest[key][ind]
             break;
         numTries += 1
-    if len(labelToUnseen[key]) == 0:
+    if key not in labelToUnseen:
         print('Failed to choose unseen device(s)')
         exit()
     #numTrain = int((1-unseenTestRatio)*numFiles)
