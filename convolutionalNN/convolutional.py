@@ -21,11 +21,11 @@ def bias_variable(shape):
   return tf.Variable(initial) 
 
 def main(_):
-  # Import data
 
+  # Import data
   #import the data from the training numpy array
-  train_data = np.zeros((1,86400))
-  train_labels = np.ones((1,1))
+  train_data = np.zeros((4,86400))
+  train_labels = np.ones((4,1))
 
   #shuffle the training data and labels
   train_data, train_labels = sk.utils.shuffle(train_data,train_labels,random_state = 5)
@@ -36,11 +36,13 @@ def main(_):
   train_data_validate = train_data[int(len(train_data)*0.8):]
   train_labels_validate = train_labels[int(len(train_data)*0.8):]
 
+  import conv_config as config
+  
   #create an inverse logits ratio to scale the training to the number
   #of representations in the set
-  bins, counts = np.unique(train_labels_train)
+  bins, counts = np.unique(train_labels_train,return_counts=True)
   rep_sum = np.sum(counts)
-  weight_vector = np.zeros(np.max(train_labels)+1)
+  weight_vector = np.zeros(len(bins))
   
   for i in range(0,len(counts)):
     weight_vector[i] = 1-(counts[i]/rep_sum)
@@ -54,49 +56,51 @@ def main(_):
   x = tf.placeholder(tf.float32, shape=[None, len(train_data[0])])
   y_ = tf.placeholder(tf.float32, shape=[None,np.max(train_labels)+1])
 
-  x_data = tr.reshape(x,[-1,len(train_data[0]),1])
+
+  x_data = tf.reshape(x,[-1,len(train_data[0]),1,1])
 
   #let's start by doing a pooling layer because this data is huge
-  pre_pool = tf.nn.max_pool(x_data, ksize=[1,10,1], strides=[1,10,1], padding='SAME')
-  
-  #try a convulational layer1 filter length of 100x32 filters
-  W_conv1 = weight_variable([100,1,32])
-  b_conv1 = bias_variable([32])
+  pre_pool = tf.nn.max_pool(x_data, ksize=[1,config.pre_pool_size,1,1], strides=[1,config.pre_pool_stride,1,1], padding='SAME')
 
-  conv1 = tf.nn.conv1d(pre_pool, W_conv1, strides=[1,1,1], padding='SAME')
+ 
+  #do the first convolutional layer 
+  W_conv1 = weight_variable([config.conv1_filter_size,1,1,config.conv1_num_filters])
+  b_conv1 = bias_variable([config.conv1_num_filters])
+
+  conv1 = tf.nn.conv2d(pre_pool, W_conv1, strides=[1,1,1,1], padding='SAME')
   conv1_out = tf.nn.relu(conv1 + b_conv1)
   
-  #pool again every 10 samples
-  pool1 = tf.nn.max_pool(conv1_out, ksize=[1,10,1], strides=[1,10,1], padding='SAME')
+  #pool again every
+  pool1 = tf.nn.max_pool(conv1_out, ksize=[1,config.pool1_size,1,1], strides=[1,config.pool1_stride,1,1], padding='SAME')
   
   #layer two convolution 100x32 - 64filters
-  W_conv2 = weight_variable([100,32,64])
-  b_conv2 = bias_variable([64])
+  W_conv2 = weight_variable([config.conv2_filter_size,1,config.conv1_num_filters,config.conv2_num_filters])
+  b_conv2 = bias_variable([config.conv2_num_filters])
 
-  conv2 = tf.nn.conv1d(pool1, W_conv2, strides=[1,1,1], padding='SAME')
+  conv2 = tf.nn.conv2d(pool1, W_conv2, strides=[1,1,1,1], padding='SAME')
   conv2_out = tf.nn.relu(conv2 + b_conv2)
 
   #reduce by 4 just because it's devisible
-  pool2 = tf.nn.max_pool(conv2_out, ksize=[1,4,1], strides=[1,10,1], padding='SAME')
+  pool2 = tf.nn.max_pool(conv2_out, ksize=[1,config.pool2_size,1,1], strides=[1,config.pool2_stride,1,1], padding='SAME')
   
   #data size should now be 1x216x64 filters
-  W_fc1 = weight_variable([216*64,1024])  
-  b_fc1 = bias_variable([1024])
+  W_fc1 = weight_variable([(int(len(train_data[0])/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters),config.hidden1_size])  
+  b_fc1 = bias_variable([config.hidden1_size])
 
   #I think the data should already be flat but this call is probably cheap
-  pool2_flat = tf.reshape(pool2,[-1,216*64])
+  pool2_flat = tf.reshape(pool2,[-1,int((len(train_data[0])/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters)])
 
   #first hidden layer
   h1 = tf.nn.relu(tf.matmul(pool2_flat,W_fc1)+b_fc1)
 
-  W_fc2 = weight_variable([1024,len(train_labels[0])])  
+  W_fc2 = weight_variable([config.hidden1_size,len(train_labels[0])])  
   b_fc2 = bias_variable([len(train_labels[0])])
  
   #these are the outputs 
   y_pre_weight = tf.matmul(h1,W_fc2)+b_fc2
   
   #weight the outputs to inverse class frequency
-  y = tf.mul(y_pre_weight,class_weights) 
+  y = tf.multiply(y_pre_weight,tf.cast(class_weights,tf.float32)) 
   
   #now calculate cross entropy on weighted inputs 
   cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_,logits=y))
