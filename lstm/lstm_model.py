@@ -21,26 +21,32 @@ from tensorflow.python.ops import clip_ops
 from tensorflow.contrib.rnn import LSTMCell
 from tensorflow.contrib.rnn.python.ops import core_rnn
 
-def load_data(direc,ratio,dataset):
+def load_data(direc,ratio):
   """Input:
-  direc: location of the UCR archive
+  direc: location of the data sets
   ratio: ratio to split training and testset
-  dataset: name of the dataset in the UCR archive"""
-  datadir = direc + '/' + dataset + '/' + dataset
-  data_train = np.loadtxt(datadir+'_TRAIN',delimiter=',')
-  data_test_val = np.loadtxt(datadir+'_TEST',delimiter=',')
-  DATA = np.concatenate((data_train,data_test_val),axis=0)
-  N = DATA.shape[0]
+  """
+  data_train = np.load(direc+'/train.npy')[:,:,0]
+  label_train = np.load(direc+'/trainLabels.npy')
+  #data_unseen = np.load(direc+'unseen')
+  #label_unseen = np.load(direc+'unseenLabel')
+  N = data_train.shape[0]
 
   ratio = (ratio*N).astype(np.int32)
   ind = np.random.permutation(N)
-  X_train = DATA[ind[:ratio[0]],1:]
-  X_val = DATA[ind[ratio[0]:ratio[1]],1:]
-  X_test = DATA[ind[ratio[1]:],1:]
+  X_train = data_train[ind[:ratio[0]]]
+  X_val =   data_train[ind[ratio[0]:ratio[1]]]
+  X_test =  data_train[ind[ratio[1]:]]
+  print(X_train.shape)
+  print(X_val.shape)
+  print(X_test.shape)
   # Targets have labels 1-indexed. We subtract one for 0-indexed
-  y_train = DATA[ind[:ratio[0]],0]-1
-  y_val = DATA[ind[ratio[0]:ratio[1]],0]-1
-  y_test = DATA[ind[ratio[1]:],0]-1
+  y_train = label_train[ind[:ratio[0]]]
+  y_val =   label_train[ind[ratio[0]:ratio[1]]]
+  y_test =  label_train[ind[ratio[1]:]]
+  print(y_train.shape)
+  print(y_val.shape)
+  print(y_test.shape)
   return X_train,X_val,X_test,y_train,y_val,y_test
 
 

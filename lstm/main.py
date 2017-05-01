@@ -37,7 +37,7 @@ os.makedirs(run_dir)
 
 """Load the data"""
 ratio = np.array([float(dataset_config['train_ratio']), float(dataset_config['validate_ratio'])]) #Ratios where to split the training and validation set
-X_train,X_val,X_test,y_train,y_val,y_test = load_data(direc,ratio,dataset_config['dataset'])
+X_train,X_val,X_test,y_train,y_val,y_test = load_data(direc,ratio)
 N,num_val = X_train.shape
 num_classes = len(np.unique(y_train))
 
