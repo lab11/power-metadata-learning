@@ -44,7 +44,8 @@ def main(_):
   #of representations in the set
   bins, counts = np.unique(train_labels_train,return_counts=True)
   rep_sum = np.sum(counts)
-  weight_vector = np.zeros(len(bins))
+  num_classes = len(bins)
+  weight_vector = np.zeros(num_classes)
 
   for i in range(0,len(counts)):
     weight_vector[i] = 1-(counts[i]/rep_sum)
@@ -95,8 +96,8 @@ def main(_):
   #first hidden layer
   h1 = tf.nn.relu(tf.matmul(pool2_flat,W_fc1)+b_fc1)
 
-  W_fc2 = weight_variable([config.hidden1_size,len(train_labels[0])])
-  b_fc2 = bias_variable([len(train_labels[0])])
+  W_fc2 = weight_variable([config.hidden1_size,num_classes])
+  b_fc2 = bias_variable([num_classes])
 
   #these are the outputs
   y_pre_weight = tf.matmul(h1,W_fc2)+b_fc2
