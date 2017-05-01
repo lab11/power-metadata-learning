@@ -51,7 +51,7 @@ def concatenate_arrays(l2d, l2id):
             #print(device.shape[0])
             data[data_ind:device.shape[0]] = device
             ids += device.shape[0]*[l2id[key][i]]
-            labels.append(key)
+            labels += device.shape[0]*[labelToNum[key]]
         #print(data.shape)
         #print(len(ids))
     ids = np.array(ids)
@@ -65,10 +65,12 @@ labels = labelFile.readline().strip().split(',')
 labelToFilenames = {}
 labelToID = {}
 labelToData = {}
-for label in labels:
+labelToNum = {}
+for i,label in enumerate(labels):
     labelToFilenames[label] = []
     labelToID[label] = []
     labelToData[label] = []
+    labelToNum[label] = i
 
 #now get a list of data files
 dataFiles = os.listdir(args.inputdir)
@@ -158,6 +160,13 @@ del labelToTrain
 print('  Working on unseen set')
 unseen,unseenLabels,unseenID = concatenate_arrays(labelToUnseen,labelToUnseenID)
 del labelToUnseen
+
+print(train.shape)
+print(trainLabels.shape)
+print(trainID.shape)
+print(unseen.shape)
+print(unseenLabels.shape)
+print(unseenID.shape)
 
 np.save(args.outputdir + '/' + 'train', train)
 np.save(args.outputdir + '/' + 'trainLabels', trainLabels)
