@@ -49,7 +49,7 @@ def concatenate_arrays(l2d, l2id):
         for i,device in enumerate(l2d[key]):
             #print(l2id[key][i])
             #print(device.shape[0])
-            data[data_ind:device.shape[0]] = device
+            data[data_ind:device.shape[0]] = np.copy(device)
             ids += device.shape[0]*[l2id[key][i]]
             labels += device.shape[0]*[labelToNum[key]]
         #print(data.shape)
@@ -96,9 +96,9 @@ for key in labelToFilenames:
     for filename in labelToFilenames[key]:
         data = split_data(np.load(args.inputdir + '/' + filename))
         #percentile = np.percentile(data[:,:,0], 90, 1)
-        #maximum = np.amax(data[:,:,0], 1)
+        maximum = np.amax(data[:,:,0], 1)
         #mean = np.mean(data[:,:,0], 1)
-        #keep = maximum > 3
+        keep = maximum > 3
         labelToData[key].append(data)
 
 print('\nGenerate unseen set')
