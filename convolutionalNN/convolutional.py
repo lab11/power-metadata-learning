@@ -4,9 +4,11 @@ from __future__ import print_function
 
 import argparse
 import sys
+import sklearn as sk
 
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
+import numpy as np
 
 
 FLAGS = None
@@ -20,16 +22,37 @@ def bias_variable(shape):
 
 def main(_):
   # Import data
+
   #import the data from the training numpy array
   train_data = np.zeros((1,86400))
-  train_labels = np.zeros((1,28))
+  train_labels = np.ones((1,1))
+
+  #shuffle the training data and labels
+  train_data, train_labels = sk.utils.shuffle(train_data,train_labels,random_state = 5)
+
+  #split the data 80/20
+  train_data_train = train_data[:int(len(train_data)*0.8)]
+  train_labels_train = train_labels[:int(len(train_data)*0.8)]
+  train_data_validate = train_data[int(len(train_data)*0.8):]
+  train_labels_validate = train_labels[int(len(train_data)*0.8):]
+
+  #create an inverse logits ratio to scale the training to the number
+  #of representations in the set
+  bins, counts = np.unique(train_labels_train)
+  rep_sum = np.sum(counts)
+  weight_vector = np.zeros(np.max(train_labels)+1)
+  
+  for i in range(0,len(counts)):
+    weight_vector[i] = 1-(counts[i]/rep_sum)
 
   # start a tensorflow seesion
   sess = tf.InteractiveSession()
 
+  class_weights = tf.constant(weight_vector)
+
   #generate two placeholder arrays for training and labels
   x = tf.placeholder(tf.float32, shape=[None, len(train_data[0])])
-  y_ = tf.placeholder(tf.float32, shape=[None,len(train_labels[0])])
+  y_ = tf.placeholder(tf.float32, shape=[None,np.max(train_labels)+1])
 
   x_data = tr.reshape(x,[-1,len(train_data[0]),1])
 
@@ -70,10 +93,12 @@ def main(_):
   b_fc2 = bias_variable([len(train_labels[0])])
  
   #these are the outputs 
-  y = tf.matmul(h1,W_fc2)+b_fc2
- 
-  #now we need to calculate the loss - this really should be weighted
-  #to inverse class frequency 
+  y_pre_weight = tf.matmul(h1,W_fc2)+b_fc2
+  
+  #weight the outputs to inverse class frequency
+  y = tf.mul(y_pre_weight,class_weights) 
+  
+  #now calculate cross entropy on weighted inputs 
   cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_,logits=y))
 
   train_step = tf.train.AdamOptimizer(1e-3).minimize(cross_entropy)
@@ -82,15 +107,24 @@ def main(_):
   sess.run(tf.global_variables_initializer())
 
   for i in range(20000):
-    batch = mnist.train.next_batch(50)
+    #get a batch of 100 random training points from the training set
+    batch_size = 100
+    batch_nums = np.random.choice(len(train_data_train[:,0]),batch_size) 
+    
+    #every 100th iteration let's calculate the train and validation accuracy     
     if i%100 == 0:
       train_accuracy = accuracy.eval(feed_dict={
-          x:batch[0], y_: batch[1]})
-      print("step %d, training accuracy %g"%(i, train_accuracy))
-    train_step.run(feed_dict={x: batch[0], y_: batch[1]})
+          x:train_data_train, y_: train_labels_train})
+      validation_accuracy = accuracy.eval(feed_dict={
+          x:train_data_validate, y_: train_labels_validate})
+      print("Step {}, Training accuracy: {}, Validation accuracy: {}".format(i, train_accuracy,validation_accuracy))
+    
+    #then train on the batch
+    train_step.run(feed_dict={x: train_data_train[batch_nums], y_: train_labels_train[batch_nums]})
 
-  print("test accuracy %g"%accuracy.eval(feed_dict={
-    x: mnist.test.images, y_: mnist.test.labels}))
+  #do something to evaluate test accuracy at the end
+  #print("test accuracy %g"%accuracy.eval(feed_dict={
+  #  x: mnist.test.images, y_: mnist.test.labels}))
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
