@@ -13,16 +13,19 @@ from datetime import datetime, date
 import subprocess
 import glob
 import matplotlib.pyplot as plt
+import gc
 
 SEC_IN_DAY = 24*60*60
 
 unseenTestRatio = .2
 
 parser = argparse.ArgumentParser(description='Process data input files')
-parser.add_argument('inputdir', metavar='I', type=str, nargs='+',
+parser.add_argument('inputdir', metavar='I', type=str,
                     help='Input directory with npy array files')
-parser.add_argument('labelFile', metavar='O', type=str, nargs='+',
+parser.add_argument('labelFile', metavar='L', type=str,
                     help='A file with a comma separated list of labels')
+parser.add_argument('outputdir', metavar='O', type=str,
+                    help='Directory to output training and unseen npy array files')
 
 args = parser.parse_args()
 
@@ -31,24 +34,50 @@ def split_data(data):
         days = np.array(np.split(data, splits))
         return days
 
+def concatenate_arrays(l2d, l2id):
+    # get number of days
+    days = 0
+    for key in l2d:
+        for device in l2d[key]:
+            days += device.shape[0]
+    data = np.zeros((days, SEC_IN_DAY, 2))
+    ids = []
+    data_ind = 0
+    for key in l2d:
+        print('    Working on ' + key)
+        for i,device in enumerate(l2d[key]):
+            #print(l2id[key][i])
+            #print(device.shape[0])
+            data[data_ind:device.shape[0]] = device
+            ids += device.shape[0]*[l2id[key][i]]
+        #print(data.shape)
+        #print(len(ids))
+    ids = np.array(ids)
+    print(data.shape)
+    print(ids.shape)
+    return data, ids
 
 #read the labels file and make a dict of lists
-labelFile = open(args.labelFile[0],'r')
+labelFile = open(args.labelFile,'r')
 labels = labelFile.readline().strip().split(',')
 
 labelToFilenames = {}
+labelToID = {}
 labelToData = {}
 for label in labels:
     labelToFilenames[label] = []
+    labelToID[label] = []
     labelToData[label] = []
 
 #now get a list of data files
-dataFiles = os.listdir(args.inputdir[0])
+dataFiles = os.listdir(args.inputdir)
 
 for dataFile in dataFiles:
+    devid = dataFile.split('_')[0]
     label = dataFile.split('_')[1].split('.')[0]
     if(label in labelToFilenames):
         labelToFilenames[label].append(dataFile)
+        labelToID[label].append(devid)
     else:
         print("Warning: No label for {}".format(dataFile))
 
@@ -62,7 +91,7 @@ print("\nLoading data and partitioning by day")
 for key in labelToFilenames:
     print('working on ' + key)
     for filename in labelToFilenames[key]:
-        data = split_data(np.load(args.inputdir[0] + '/' + filename))
+        data = split_data(np.load(args.inputdir + '/' + filename))
         #percentile = np.percentile(data[:,:,0], 90, 1)
         #maximum = np.amax(data[:,:,0], 1)
         #mean = np.mean(data[:,:,0], 1)
@@ -72,16 +101,21 @@ for key in labelToFilenames:
 print('\nGenerate unseen set')
 
 labelToUnseen = {}
+labelToUnseenID = {}
 labelToTrain = {}
+labelToTrainID = {}
 for key in labelToFilenames:
     numFiles = len(labelToFilenames[key])
     if numFiles <= 2:
         print('No files for label ' + key + ', skipping...')
         continue
     print('Attempting to partition ' + key)
-    # load devices
-    numPoints = 0
+
     devices = labelToData[key]
+    deviceids = labelToID[key]
+
+    # count number of points for this device
+    numPoints = 0
     for data in devices:
         numPoints += data.shape[0]*data.shape[1]
     numTries = 0
@@ -91,21 +125,43 @@ for key in labelToFilenames:
         unseenNumPoints = 0
         for device in unseenDevices:
             unseenNumPoints += device.shape[0] * device.shape[1]
-        print(key + 'pick represents {:.2g}'.format(unseenNumPoints/numPoints))
+        #print(pick)
         if unseenNumPoints/numPoints > (unseenTestRatio - .1) and \
             unseenNumPoints/numPoints < (unseenTestRatio + .1):
+            print(key + ' pick represents {:.2g}'.format(unseenNumPoints/numPoints))
             labelToUnseen[key] = unseenDevices
+            labelToUnseenID[key] = [deviceids[i] for i in pick]
             labelToTrain[key] = [devices[i] for i in set(range(len(devices))) - set(pick)]
-
+            labelToTrainID[key] = [deviceids[i] for i in set(range(len(devices))) - set(pick)]
             break;
         numTries += 1
     if key not in labelToUnseen:
         print('Failed to choose unseen device(s) for ' + key)
-        for i,device in enumerate(labelToData[key]):
+        for i,device in enumerate(devices):
             print("device {} consists of {:.2}".format(i, device.shape[0]*device.shape[1]/numPoints))
-            print("Choices: ")
-            choices = [int(i) for i in input().split()]
-            labelToUnseen[key] = [devices[i] for i in choices]
+        pick = [int(i) for i in input('user pick: ').split()]
+        labelToUnseen[key] = [devices[i] for i in pick]
+        labelToUnseenID[key] = [deviceids[i] for i in pick]
+        labelToTrain[key] = [devices[i] for i in set(range(len(devices))) - set(pick)]
+        labelToTrainID[key] = [deviceids[i] for i in set(range(len(devices))) - set(pick)]
+        del devices
+
+del labelToData
+gc.collect()
+
+# concatenate sets
+print('\nGenerating numpy arrays for test and unseen')
+print('  Working on training set')
+train,trainID =     concatenate_arrays(labelToTrain,labelToTrainID)
+del labelToTrain
+print('  Working on unseen set')
+unseen,unseenID =   concatenate_arrays(labelToUnseen,labelToUnseenID)
+del labelToUnseen
+
+np.save(args.outputdir + '/' + 'train', train)
+np.save(args.outputdir + '/' + 'trainID', trainID)
+np.save(args.outputdir + '/' + 'unseen', unseen)
+np.save(args.outputdir + '/' + 'unseenID', unseenID)
 
 # Need to concatenate the two sets, preserving each set's labels
 # Need to split labelToTrain into training and validation
