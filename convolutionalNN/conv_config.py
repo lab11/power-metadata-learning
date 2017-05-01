@@ -1,3 +1,7 @@
+#data and labels
+train_data = "../data/sets/train.npy"
+train_labels = "../data/sets/trainLabels.npy"
+
 #the size of the first max pooling layer
 pre_pool_size = 10
 pre_pool_stride = 10

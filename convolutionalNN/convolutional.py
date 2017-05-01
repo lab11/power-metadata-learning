@@ -22,10 +22,12 @@ def bias_variable(shape):
 
 def main(_):
 
+  import conv_config as config
+
   # Import data
   #import the data from the training numpy array
-  train_data = np.zeros((4,86400))
-  train_labels = np.ones((4,1))
+  train_data = np.load(config.train_data)
+  train_labels = np.load(config.train_labels)
 
   #shuffle the training data and labels
   train_data, train_labels = sk.utils.shuffle(train_data,train_labels,random_state = 5)
@@ -36,7 +38,6 @@ def main(_):
   train_data_validate = train_data[int(len(train_data)*0.8):]
   train_labels_validate = train_labels[int(len(train_data)*0.8):]
 
-  import conv_config as config
 
   #create an inverse logits ratio to scale the training to the number
   #of representations in the set
