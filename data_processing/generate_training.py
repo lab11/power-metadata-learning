@@ -42,6 +42,7 @@ def concatenate_arrays(l2d, l2id):
             days += device.shape[0]
     data = np.zeros((days, SEC_IN_DAY, 2))
     ids = []
+    labels = []
     data_ind = 0
     for key in l2d:
         print('    Working on ' + key)
@@ -50,12 +51,12 @@ def concatenate_arrays(l2d, l2id):
             #print(device.shape[0])
             data[data_ind:device.shape[0]] = device
             ids += device.shape[0]*[l2id[key][i]]
+            labels.append(key)
         #print(data.shape)
         #print(len(ids))
     ids = np.array(ids)
-    print(data.shape)
-    print(ids.shape)
-    return data, ids
+    labels = np.array(labels)
+    return data, labels, ids
 
 #read the labels file and make a dict of lists
 labelFile = open(args.labelFile,'r')
@@ -152,15 +153,17 @@ gc.collect()
 # concatenate sets
 print('\nGenerating numpy arrays for test and unseen')
 print('  Working on training set')
-train,trainID =     concatenate_arrays(labelToTrain,labelToTrainID)
+train,trainLabels,trainID = concatenate_arrays(labelToTrain,labelToTrainID)
 del labelToTrain
 print('  Working on unseen set')
-unseen,unseenID =   concatenate_arrays(labelToUnseen,labelToUnseenID)
+unseen,unseenLabels,unseenID = concatenate_arrays(labelToUnseen,labelToUnseenID)
 del labelToUnseen
 
 np.save(args.outputdir + '/' + 'train', train)
+np.save(args.outputdir + '/' + 'trainLabels', trainLabels)
 np.save(args.outputdir + '/' + 'trainID', trainID)
 np.save(args.outputdir + '/' + 'unseen', unseen)
+np.save(args.outputdir + '/' + 'unseenLabels', unseenLabels)
 np.save(args.outputdir + '/' + 'unseenID', unseenID)
 
 # Need to concatenate the two sets, preserving each set's labels
