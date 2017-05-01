@@ -27,6 +27,7 @@ def main(_):
   # Import data
   #import the data from the training numpy array
   train_data = np.load(config.train_data)
+  train_data = train_data[:,:,1]
   train_labels = np.load(config.train_labels)
 
   #shuffle the training data and labels
