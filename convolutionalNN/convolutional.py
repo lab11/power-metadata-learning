@@ -120,11 +120,14 @@ def main(_):
   #first hidden layer
   h1 = tf.nn.relu(tf.matmul(pool2_flat,W_fc1)+b_fc1)
 
+  keep_prob = tf.contant(config.keep_prob,dtype=tf.float32)
+  h1_drop = tf.nn.dropout(h1,keep_prob)
+
   W_fc2 = weight_variable([config.hidden1_size,num_classes])
   b_fc2 = bias_variable([num_classes])
 
   #these are the outputs
-  y = tf.matmul(h1,W_fc2)+b_fc2
+  y = tf.matmul(h1_drop,W_fc2)+b_fc2
 
 
   #weight the outputs to inverse class frequency

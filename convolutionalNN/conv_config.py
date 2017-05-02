@@ -1,5 +1,5 @@
 #data and labels
-model_save_path = "./model_checkpoint.tfr"
+model_save_path = "./checkpoint1/model.ckpt"
 train_data = "../data/sets/train.npy"
 train_labels = "../data/sets/trainLabels.npy"
 train_ids = "../data/sets/trainID.npy"
@@ -23,3 +23,5 @@ pool2_stride = 4
 #hidden layer
 hidden1_size = 1024
 
+#dropout
+keep_prob = 0.5
