@@ -142,7 +142,7 @@ def main(_):
   
   one_hot_preds = tf.transpose(tf.one_hot(preds,num_classes))
   ids = tf.reshape(ids,[-1])
-  one_hot_ids = tf.one_hot(ids,num_ids)
+  one_hot_ids = tf.one_hot(ids,num_ids+1)
   votes = tf.matmul(one_hot_preds,one_hot_ids)
   votes = tf.transpose(votes)
   not_included = tf.not_equal(tf.reduce_max(votes,1),0)
