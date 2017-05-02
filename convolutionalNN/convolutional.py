@@ -141,6 +141,7 @@ def main(_):
   accuracy = tf.reduce_mean(tf.cast(correct,tf.float32))
   
   one_hot_preds = tf.transpose(tf.one_hot(preds,num_classes))
+  ids = tf.reshape(ids,[-1])
   one_hot_ids = tf.one_hot(ids,num_ids)
   votes = tf.matmul(one_hot_preds,one_hot_ids)
   votes = tf.transpose(votes)
