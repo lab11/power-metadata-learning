@@ -12,7 +12,6 @@ generates an output to be classified with Softmax
 
 import numpy as np
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL']='3'
 import tensorflow as tf
 tf.logging.set_verbosity(tf.logging.ERROR)
 
@@ -74,23 +73,24 @@ class Model():
     self.input = tf.placeholder(tf.float32, [None, num_val], name = 'input')
     self.labels = tf.placeholder(tf.int64, [None], name='labels')
     self.keep_prob = tf.placeholder("float", name = 'Drop_out_keep_prob')
+
     print('Building Pooling layer')
     with tf.name_scope("Pooling") as scope:
         pool_input = tf.reshape(self.input,[-1,num_val,1,1], name = 'pool_input')
         pre_pool = tf.nn.max_pool(pool_input, ksize=[1,config['pre_pool_size'],1,1], strides=[1,config['pre_pool_stride'],1,1], padding='SAME', name='pre_pool')
         pre_pool = tf.squeeze(pre_pool, [2,3], name='pre_pool_reshape')
+
     print('Building LSTM cells')
     with tf.name_scope("LSTM_setup") as scope:
       def single_cell():
         return tf.contrib.rnn.DropoutWrapper(LSTMCell(hidden_size),output_keep_prob=self.keep_prob)
 
       cell = tf.contrib.rnn.MultiRNNCell([single_cell() for _ in range(num_layers)])
-      #initial_state = cell.zero_state(self.batch_size, tf.float32)
+      self.initial_state = cell.zero_state(self.batch_size, tf.float32)
 
-    input_list = tf.unstack(tf.expand_dims(pre_pool,axis=2),axis=1)
-    outputs,_ = core_rnn.static_rnn(cell, input_list, dtype=tf.float32)
-
-    output = outputs[-1]
+    inputs_expand = tf.expand_dims(pre_pool,axis=2)
+    outputs,_ = tf.nn.dynamic_rnn(cell, inputs_expand, swap_memory=True,dtype=tf.float32)
+    output = tf.transpose(outputs, [1, 0, 2])[-1]
 
     print('Building Loss and Classification')
     #Generate a classification from the last cell_output

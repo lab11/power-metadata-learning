@@ -7,6 +7,7 @@ generates an output to be classified with Softmax
 """
 
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 from datetime import datetime
 import configparser
 import numpy as np
@@ -41,6 +42,7 @@ X_train,X_val,X_test,y_train,y_val,y_test = load_data(direc,ratio)
 N,num_val = X_train.shape
 bins, counts = np.unique(y_train, return_counts=True)
 num_classes = len(bins)
+print('classes: {}'.format(num_classes))
 
 """Calculate Loss Weight Vector"""
 weight_vec = 1 - counts/N
@@ -75,13 +77,14 @@ cost_train_ma = -np.log(1/float(num_classes)+1e-9)  #Moving average training cos
 acc_train_ma = 0.0
 try:
   for i in range(max_iterations):
+    print('iterations: {}'.format(i))
     X_batch, y_batch = sample_batch(X_train,y_train,batch_size)
 
     #Next line does the actual training
     cost_train, acc_train,_ = sess.run([model.cost,model.accuracy, model.train_op],feed_dict = {model.input: X_batch,model.labels: y_batch,model.keep_prob:dropout})
     cost_train_ma = cost_train_ma*0.99 + cost_train*0.01
     acc_train_ma = acc_train_ma*0.99 + acc_train*0.01
-    if i%100 == 1:
+    if i%50 == 1:
     #Evaluate validation performance
       X_batch, y_batch = sample_batch(X_val,y_val,batch_size)
       cost_val, summ,acc_val = sess.run([model.cost,model.merged,model.accuracy],feed_dict = {model.input: X_batch, model.labels: y_batch, model.keep_prob:1.0})
