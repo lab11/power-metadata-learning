@@ -5,6 +5,7 @@ from __future__ import print_function
 import argparse
 import sys
 import sklearn as sk
+import sklearn.preprocessing as skp
 
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
@@ -17,125 +18,138 @@ def weight_variable(shape):
   return tf.Variable(initial)
 
 def bias_variable(shape):
-  initial = tf.constant(0.1, shape=shape)
+  initial = tf.truncated_normal(shape, stddev=0.1)
   return tf.Variable(initial)
 
 def main(_):
+  with tf.device('/gpu:2'):
+    import conv_config as config
 
-  import conv_config as config
+    # Import data
+    #import the data from the training numpy array
+    train_data = np.load(config.train_data)
+    train_data = train_data[:,:,0]
+    train_labels = np.load(config.train_labels)
+    
+    #print(np.max(train_data))
+    #print(np.min(train_data)) 
+    train_data = skp.normalize(train_data,axis=0)
 
-  # Import data
-  #import the data from the training numpy array
-  train_data = np.load(config.train_data)
-  train_data = train_data[:,:,1]
-  train_labels = np.load(config.train_labels)
+    #shuffle the training data and labels
+    train_data, train_labels = sk.utils.shuffle(train_data,train_labels,random_state = 5)
 
-  #shuffle the training data and labels
-  train_data, train_labels = sk.utils.shuffle(train_data,train_labels,random_state = 5)
-
-  #split the data 80/20
-  train_data_train = train_data[:int(len(train_data)*0.8)]
-  train_labels_train = train_labels[:int(len(train_data)*0.8)]
-  train_data_validate = train_data[int(len(train_data)*0.8):]
-  train_labels_validate = train_labels[int(len(train_data)*0.8):]
-
-
-  #create an inverse logits ratio to scale the training to the number
-  #of representations in the set
-  bins, counts = np.unique(train_labels_train,return_counts=True)
-  rep_sum = np.sum(counts)
-  num_classes = len(bins)
-  weight_vector = np.zeros(num_classes)
-
-  for i in range(0,len(counts)):
-    weight_vector[i] = 1-(counts[i]/rep_sum)
-
-  # start a tensorflow seesion
-  sess = tf.InteractiveSession()
-
-  class_weights = tf.constant(weight_vector)
-
-  #generate two placeholder arrays for training and labels
-  x = tf.placeholder(tf.float32, shape=[None, len(train_data[0])])
-  y_ = tf.placeholder(tf.float32, shape=[None,1])
+    #split the data 80/20
+    train_data_train = train_data[:int(len(train_data)*0.8)]
+    train_labels_train = train_labels[:int(len(train_data)*0.8)]
+    train_data_validate = train_data[int(len(train_data)*0.8):]
+    train_labels_validate = train_labels[int(len(train_data)*0.8):]
 
 
-  x_data = tf.reshape(x,[-1,len(train_data[0]),1,1])
+    #create an inverse logits ratio to scale the training to the number
+    #of representations in the set
+    bins, counts = np.unique(train_labels_train,return_counts=True)
+    rep_sum = np.sum(counts)
+    num_classes = len(bins)
+    weight_vector = np.zeros(num_classes)
 
-  #let's start by doing a pooling layer because this data is huge
-  pre_pool = tf.nn.max_pool(x_data, ksize=[1,config.pre_pool_size,1,1], strides=[1,config.pre_pool_stride,1,1], padding='SAME')
+    for i in range(0,len(counts)):
+      weight_vector[i] = 1-(counts[i]/rep_sum)
+
+    # start a tensorflow seesion
+    sess = tf.InteractiveSession()
+
+    class_weights = tf.constant(weight_vector)
+
+    #generate two placeholder arrays for training and labels
+    x = tf.placeholder(tf.float32, shape=[None, len(train_data[0])])
+    y_ = tf.placeholder(tf.int32, shape=[None,1])
 
 
-  #do the first convolutional layer
-  W_conv1 = weight_variable([config.conv1_filter_size,1,1,config.conv1_num_filters])
-  b_conv1 = bias_variable([config.conv1_num_filters])
+    x_data = tf.reshape(x,[-1,len(train_data[0]),1,1])
 
-  conv1 = tf.nn.conv2d(pre_pool, W_conv1, strides=[1,1,1,1], padding='SAME')
-  conv1_out = tf.nn.relu(conv1 + b_conv1)
+    #let's start by doing a pooling layer because this data is huge
+    pre_pool = tf.nn.max_pool(x_data, ksize=[1,config.pre_pool_size,1,1], strides=[1,config.pre_pool_stride,1,1], padding='SAME')
 
-  #pool again every
-  pool1 = tf.nn.max_pool(conv1_out, ksize=[1,config.pool1_size,1,1], strides=[1,config.pool1_stride,1,1], padding='SAME')
 
-  #layer two convolution 100x32 - 64filters
-  W_conv2 = weight_variable([config.conv2_filter_size,1,config.conv1_num_filters,config.conv2_num_filters])
-  b_conv2 = bias_variable([config.conv2_num_filters])
+    #do the first convolutional layer
+    W_conv1 = weight_variable([config.conv1_filter_size,1,1,config.conv1_num_filters])
+    b_conv1 = bias_variable([config.conv1_num_filters])
 
-  conv2 = tf.nn.conv2d(pool1, W_conv2, strides=[1,1,1,1], padding='SAME')
-  conv2_out = tf.nn.relu(conv2 + b_conv2)
+    conv1 = tf.nn.conv2d(pre_pool, W_conv1, strides=[1,1,1,1], padding='SAME')
+    conv1_out = tf.nn.relu(conv1 + b_conv1)
 
-  #reduce by 4 just because it's devisible
-  pool2 = tf.nn.max_pool(conv2_out, ksize=[1,config.pool2_size,1,1], strides=[1,config.pool2_stride,1,1], padding='SAME')
+    #pool again every
+    pool1 = tf.nn.max_pool(conv1_out, ksize=[1,config.pool1_size,1,1], strides=[1,config.pool1_stride,1,1], padding='SAME')
 
-  #data size should now be 1x216x64 filters
-  W_fc1 = weight_variable([(int(len(train_data[0])/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters),config.hidden1_size])
-  b_fc1 = bias_variable([config.hidden1_size])
+    #layer two convolution 100x32 - 64filters
+    W_conv2 = weight_variable([config.conv2_filter_size,1,config.conv1_num_filters,config.conv2_num_filters])
+    b_conv2 = bias_variable([config.conv2_num_filters])
 
-  #I think the data should already be flat but this call is probably cheap
-  pool2_flat = tf.reshape(pool2,[-1,int((len(train_data[0])/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters)])
+    conv2 = tf.nn.conv2d(pool1, W_conv2, strides=[1,1,1,1], padding='SAME')
+    conv2_out = tf.nn.relu(conv2 + b_conv2)
 
-  #first hidden layer
-  h1 = tf.nn.relu(tf.matmul(pool2_flat,W_fc1)+b_fc1)
+    #reduce by 4 just because it's devisible
+    pool2 = tf.nn.max_pool(conv2_out, ksize=[1,config.pool2_size,1,1], strides=[1,config.pool2_stride,1,1], padding='SAME')
 
-  W_fc2 = weight_variable([config.hidden1_size,num_classes])
-  b_fc2 = bias_variable([num_classes])
+    #data size should now be 1x216x64 filters
+    W_fc1 = weight_variable([(int(len(train_data[0])/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters),config.hidden1_size])
+    b_fc1 = bias_variable([config.hidden1_size])
 
-  #these are the outputs
-  y_pre_weight = tf.matmul(h1,W_fc2)+b_fc2
+    #I think the data should already be flat but this call is probably cheap
+    pool2_flat = tf.reshape(pool2,[-1,int((len(train_data[0])/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters)])
 
-  #weight the outputs to inverse class frequency
-  y = tf.multiply(y_pre_weight,tf.cast(class_weights,tf.float32))
+    #first hidden layer
+    h1 = tf.nn.relu(tf.matmul(pool2_flat,W_fc1)+b_fc1)
 
-  #now calculate cross entropy on weighted inputs
-  cross_entropy = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y_,logits=y))
+    W_fc2 = weight_variable([config.hidden1_size,num_classes])
+    b_fc2 = bias_variable([num_classes])
 
-  train_step = tf.train.AdamOptimizer(1e-3).minimize(cross_entropy)
-  correct = tf.equal(tf.argmax(y,1),tf.argmax(y_,1))
-  accuracy = tf.reduce_mean(tf.cast(correct,tf.float32))
-  sess.run(tf.global_variables_initializer())
+    #these are the outputs
+    y = tf.matmul(h1,W_fc2)+b_fc2
+    
+    res = tf.argmax(y,1)
 
-  for i in range(20000):
-    #get a batch of 100 random training points from the training set
-    batch_size = 100
-    batch_nums = np.random.choice(len(train_data_train[:,0]),batch_size)
-    sys.stdout.write("Batch {}".format(i))
-    sys.stdout.flush()
-    sys.stdout.write('\r')
-    sys.stdout.flush()
+    #weight the outputs to inverse class frequency
+    y_w = tf.multiply(y,tf.cast(class_weights,tf.float32))
 
-    #every 100th iteration let's calculate the train and validation accuracy
-    if i%100 == 0:
-      train_accuracy = accuracy.eval(feed_dict={
-          x:train_data_train, y_: train_labels_train})
-      validation_accuracy = accuracy.eval(feed_dict={
-          x:train_data_validate, y_: train_labels_validate})
-      print("Step {}, Training accuracy: {}, Validation accuracy: {}".format(i, train_accuracy,validation_accuracy))
+    #now calculate cross entropy on weighted inputs
+    y_ = tf.reshape(y_,[-1])
+    cross_entropy = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y_,logits=y_w))
 
-    #then train on the batch
-    train_step.run(feed_dict={x: train_data_train[batch_nums], y_: train_labels_train[batch_nums]})
+    train_step = tf.train.GradientDescentOptimizer(1e-2).minimize(cross_entropy)
+    correct = tf.equal(tf.argmax(y,1),tf.cast(y_,tf.int64))
+    accuracy = tf.reduce_mean(tf.cast(correct,tf.float32))
+    sess.run(tf.global_variables_initializer())
 
-  #do something to evaluate test accuracy at the end
-  #print("test accuracy %g"%accuracy.eval(feed_dict={
-  #  x: mnist.test.images, y_: mnist.test.labels}))
+    for i in range(20000):
+      #get a batch of 100 random training points from the training set
+      batch_size = 100
+      batch_nums = np.random.choice(len(train_data_train[:,0]),batch_size)
+      test_nums = np.random.choice(len(train_data_train[:,0]),2000)
+      sys.stdout.write("Batch {}".format(i))
+      sys.stdout.flush()
+      sys.stdout.write('\r')
+      sys.stdout.flush()
+      
+      #every 100th iteration let's calculate the train and validation accuracy
+      if i%100 == 0:
+        train_accuracy = accuracy.eval(feed_dict={
+            x:train_data_train[test_nums], y_: train_labels_train[test_nums]})
+        validation_accuracy = accuracy.eval(feed_dict={
+            x:train_data_validate, y_: train_labels_validate})
+        print("Step {}, Training accuracy: {}, Validation accuracy: {}".format(i, train_accuracy,validation_accuracy))
+        print(res.eval(feed_dict={x:train_data_train[test_nums]}))
+        print(y_.eval(feed_dict={y_:train_labels_train[test_nums]}))
+        print(cross_entropy.eval(feed_dict={x:train_data_train[test_nums], y_: train_labels_train[test_nums]}))
+
+        #print("Step {}, Validation accuracy: {}".format(i, validation_accuracy))
+
+      #then train on the batch
+      train_step.run(feed_dict={x: train_data_train[batch_nums], y_: train_labels_train[batch_nums]})
+
+    #do something to evaluate test accuracy at the end
+    #print("test accuracy %g"%accuracy.eval(feed_dict={
+    #  x: mnist.test.images, y_: mnist.test.labels}))
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
