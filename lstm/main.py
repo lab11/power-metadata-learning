@@ -39,21 +39,26 @@ os.makedirs(run_dir)
 ratio = np.array([float(dataset_config['train_ratio']), float(dataset_config['validate_ratio'])]) #Ratios where to split the training and validation set
 X_train,X_val,X_test,y_train,y_val,y_test = load_data(direc,ratio)
 N,num_val = X_train.shape
-num_classes = len(np.unique(y_train))
+bins, counts = np.unique(y_train, return_counts=True)
+num_classes = len(bins)
 
+"""Calculate Loss Weight Vector"""
+weight_vec = 1 - counts/N
+print(weight_vec)
 """Hyperparamaters"""
 max_iterations = int(hparams['max_iterations'])
 dropout = float(hparams['dropout'])
 batch_size = int(hparams['batch_size'])
-model_config = {'num_layers' :    int(hparams['num_layers']),    #number of layers of stacked RNN's
-                'hidden_size' :   int(hparams['hidden_size']),   #memory cells in a layer
-                'max_grad_norm' : int(hparams['max_grad_norm']), #maximum gradient norm during training
-                'pre_pool_size':  int(hparams['pre_pool_size'],
-                'pre_pool_stride':int(hparams['pre_pool_stride'],
-                'batch_size' :    batch_size,
-                'learning_rate' : float(hparams['learning_rate']),
-                'num_val':        num_val,
-                'num_classes':    num_classes,
+model_config = {'num_layers' :      int(hparams['num_layers']),    #number of layers of stacked RNN's
+                'hidden_size' :     int(hparams['hidden_size']),   #memory cells in a layer
+                'max_grad_norm' :   int(hparams['max_grad_norm']), #maximum gradient norm during training
+                'pre_pool_size':    int(hparams['pre_pool_size']),
+                'pre_pool_stride':  int(hparams['pre_pool_stride']),
+                'batch_size' :      batch_size,
+                'learning_rate' :   float(hparams['learning_rate']),
+                'num_val':          num_val,
+                'num_classes':      num_classes,
+                'weight_vec':      weight_vec}
 
 epochs = np.floor(batch_size*max_iterations / N)
 print('Train %.0f samples in approximately %d epochs' %(N,epochs))
