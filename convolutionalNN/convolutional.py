@@ -5,6 +5,7 @@ from __future__ import print_function
 import argparse
 import sys
 import os
+import glob
 import sklearn as sk
 import sklearn.preprocessing as skp
 
@@ -125,7 +126,7 @@ def main(_):
 
   saver = tf.train.Saver()
 
-  if(os.path.isfile(config.model_save_path)):
+  if(len(glob.glob(config.model_save_path + ".*")) > 0):
       print("Restoring model from checkpoint")
       saver.restore(sess, config.model_save_path)
   else:
@@ -135,7 +136,7 @@ def main(_):
 
   for i in range(20000):
     #get a batch of 100 random training points from the training set
-    batch_size = 100
+    batch_size = 50
     batch_nums = np.random.choice(len(train_data_train[:,0]),batch_size)
     test_nums = np.random.choice(len(train_data_train[:,0]),2000)
     sys.stdout.write("Batch {}".format(i))
