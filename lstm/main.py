@@ -48,12 +48,12 @@ batch_size = int(hparams['batch_size'])
 model_config = {'num_layers' :    int(hparams['num_layers']),    #number of layers of stacked RNN's
                 'hidden_size' :   int(hparams['hidden_size']),   #memory cells in a layer
                 'max_grad_norm' : int(hparams['max_grad_norm']), #maximum gradient norm during training
+                'pre_pool_size':  int(hparams['pre_pool_size'],
+                'pre_pool_stride':int(hparams['pre_pool_stride'],
                 'batch_size' :    batch_size,
                 'learning_rate' : float(hparams['learning_rate']),
                 'num_val':        num_val,
-                'num_classes':    num_classes}
-
-
+                'num_classes':    num_classes,
 
 epochs = np.floor(batch_size*max_iterations / N)
 print('Train %.0f samples in approximately %d epochs' %(N,epochs))

@@ -74,6 +74,12 @@ class Model():
     self.labels = tf.placeholder(tf.int64, [None], name='labels')
     self.keep_prob = tf.placeholder("float", name = 'Drop_out_keep_prob')
 
+    print('Building Pooling layer')
+    with tf.name_scope("Pooling") as scope:
+        pool_input = tf.reshape(self.input,[-1,num_val,1,1], name = 'pool_input')
+        pre_pool = tf.nn.max_pool(pool_input, ksize=[1,config['pre_pool_size'],1,1], strides=[1,config['pre_pool_stride'],1,1], padding='SAME', name='pre_pool')
+        pre_pool = tf.squeeze(pre_pool, [2,3], name='pre_pool_reshape')
+    print('Building LSTM cells')
     with tf.name_scope("LSTM_setup") as scope:
       def single_cell():
         return tf.contrib.rnn.DropoutWrapper(LSTMCell(hidden_size),output_keep_prob=self.keep_prob)
@@ -81,12 +87,13 @@ class Model():
       cell = tf.contrib.rnn.MultiRNNCell([single_cell() for _ in range(num_layers)])
       #initial_state = cell.zero_state(self.batch_size, tf.float32)
 
-    input_list = tf.unstack(tf.expand_dims(self.input,axis=2),axis=1)
+    input_list = tf.unstack(tf.expand_dims(pre_pool,axis=2),axis=1)
     outputs,_ = core_rnn.static_rnn(cell, input_list, dtype=tf.float32)
 
     output = outputs[-1]
 
 
+    print('Building Loss and Classification')
     #Generate a classification from the last cell_output
     #Note, this is where timeseries classification differs from sequence to sequence
     #modelling. We only output to Softmax at last time step
@@ -105,6 +112,7 @@ class Model():
       h2 = tf.summary.scalar('cost', self.cost)
 
 
+    print('Building Optimizer')
     """Optimizer"""
     with tf.name_scope("Optimizer") as scope:
       tvars = tf.trainable_variables()
