@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import argparse
 import sys
+import os
 import sklearn as sk
 import sklearn.preprocessing as skp
 
@@ -22,17 +23,20 @@ def bias_variable(shape):
   return tf.Variable(initial)
 
 def main(_):
-  with tf.device('/gpu:2'):
+  with tf.device('/gpu:0'):
     import conv_config as config
+
+    #instantiate a saver
+
 
     # Import data
     #import the data from the training numpy array
     train_data = np.load(config.train_data)
     train_data = train_data[:,:,0]
     train_labels = np.load(config.train_labels)
-    
+
     #print(np.max(train_data))
-    #print(np.min(train_data)) 
+    #print(np.min(train_data))
     train_data = skp.normalize(train_data,axis=0)
 
     #shuffle the training data and labels
@@ -106,7 +110,7 @@ def main(_):
 
     #these are the outputs
     y = tf.matmul(h1,W_fc2)+b_fc2
-    
+
     res = tf.argmax(y,1)
 
     #weight the outputs to inverse class frequency
@@ -116,10 +120,17 @@ def main(_):
     y_ = tf.reshape(y_,[-1])
     cross_entropy = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y_,logits=y_w))
 
-    train_step = tf.train.GradientDescentOptimizer(1e-2).minimize(cross_entropy)
+    train_step = tf.train.AdamOptimizer(0.1).minimize(cross_entropy)
     correct = tf.equal(tf.argmax(y,1),tf.cast(y_,tf.int64))
     accuracy = tf.reduce_mean(tf.cast(correct,tf.float32))
-    sess.run(tf.global_variables_initializer())
+
+    saver = tf.train.Saver()
+
+    if(os.path.isfile(config.model_save_path)):
+        saver.restore(sess, config.model_save_path)
+    else:
+        sess.run(tf.global_variables_initializer())
+
 
     for i in range(20000):
       #get a batch of 100 random training points from the training set
@@ -130,7 +141,7 @@ def main(_):
       sys.stdout.flush()
       sys.stdout.write('\r')
       sys.stdout.flush()
-      
+
       #every 100th iteration let's calculate the train and validation accuracy
       if i%100 == 0:
         train_accuracy = accuracy.eval(feed_dict={
@@ -141,6 +152,8 @@ def main(_):
         print(res.eval(feed_dict={x:train_data_train[test_nums]}))
         print(y_.eval(feed_dict={y_:train_labels_train[test_nums]}))
         print(cross_entropy.eval(feed_dict={x:train_data_train[test_nums], y_: train_labels_train[test_nums]}))
+
+        saver.save(sess, config.model_save_path)
 
         #print("Step {}, Validation accuracy: {}".format(i, validation_accuracy))
 
