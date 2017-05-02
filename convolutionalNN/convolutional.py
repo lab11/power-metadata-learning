@@ -145,7 +145,7 @@ def main(_):
   one_hot_ids = tf.one_hot(ids,num_ids)
   votes = tf.matmul(one_hot_preds,one_hot_ids)
   votes = tf.transpose(votes)
-  not_included = tf.not_equal(tf.max(votes),0)
+  not_included = tf.not_equal(tf.reduce_max(votes,1),0)
   grouped_correct = tf.equal(tf.boolean_mask(tf.argmax(votes,1),not_included),tf.boolean_mask(id_to_lab,not_included))
   grouped_accuracy = tf.reduce_mean(tf.cast(grouped_correct,tf.float32))
   
