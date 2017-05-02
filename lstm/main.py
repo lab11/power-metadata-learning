@@ -44,7 +44,7 @@ num_classes = len(bins)
 
 """Calculate Loss Weight Vector"""
 weight_vec = 1 - counts/N
-print(weight_vec)
+
 """Hyperparamaters"""
 max_iterations = int(hparams['max_iterations'])
 dropout = float(hparams['dropout'])

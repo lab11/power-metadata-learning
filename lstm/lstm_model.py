@@ -102,7 +102,7 @@ class Model():
             softmax_w = tf.get_variable("softmax_w", [hidden_size, num_classes])
             softmax_b = tf.get_variable("softmax_b", [num_classes])
           class_weights = tf.constant(weight_vec)
-          logits = tf.mul(tf.nn.xw_plus_b(output, softmax_w, softmax_b), class_weights)
+          logits = tf.multiply(tf.nn.xw_plus_b(output, softmax_w, softmax_b), class_weights)
           #Use sparse Softmax because we have mutually exclusive classes
           loss = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits,labels=self.labels,name = 'softmax')
           self.cost = tf.reduce_sum(loss) / self.batch_size
