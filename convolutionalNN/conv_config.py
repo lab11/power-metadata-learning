@@ -1,4 +1,5 @@
 #data and labels
+model_save_path "./model_checkpoint.tfr"
 train_data = "../data/sets/train.npy"
 train_labels = "../data/sets/trainLabels.npy"
 
