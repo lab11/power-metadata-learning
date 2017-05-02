@@ -25,6 +25,7 @@ dataset_config = config['Datasets']
 logging_config = config['Logging']
 direc = dataset_config['directory']
 log_dir = logging_config['log_directory']
+model_path = logging_config['model_path']
 
 # Generate run name
 start_time = str(datetime.now()).replace(" ", "_")
@@ -67,11 +68,16 @@ print('Train %.0f samples in approximately %d epochs' %(N,epochs))
 
 #Instantiate a model
 model = Model(model_config)
+saver = model.saver
 
 """Session time"""
 sess = tf.Session() #Depending on your use, do not forget to close the session
 writer = tf.summary.FileWriter(run_dir, sess.graph)  #writer for Tensorboard
-sess.run(model.init_op)
+if os.path.isfile(model_path+".index"):
+    saver.restore(sess, model_path)
+    print("Load Model")
+else:
+    sess.run(model.init_op)
 
 cost_train_ma = -np.log(1/float(num_classes)+1e-9)  #Moving average training cost
 acc_train_ma = 0.0
@@ -84,7 +90,7 @@ try:
     cost_train, acc_train,_ = sess.run([model.cost,model.accuracy, model.train_op],feed_dict = {model.input: X_batch,model.labels: y_batch,model.keep_prob:dropout})
     cost_train_ma = cost_train_ma*0.99 + cost_train*0.01
     acc_train_ma = acc_train_ma*0.99 + acc_train*0.01
-    if i%50 == 1:
+    if i%10 == 1:
     #Evaluate validation performance
       X_batch, y_batch = sample_batch(X_val,y_val,batch_size)
       cost_val, summ,acc_val = sess.run([model.cost,model.merged,model.accuracy],feed_dict = {model.input: X_batch, model.labels: y_batch, model.keep_prob:1.0})
@@ -92,8 +98,14 @@ try:
       #Write information to TensorBoard
       writer.add_summary(summ, i)
       writer.flush()
+      #Save model
+      saver.save(sess, model_path)
+
 except KeyboardInterrupt:
   pass
+
+#Save model
+saver.save(sess, model_path)
 
 epoch = float(i)*batch_size/N
 print('Trained %.1f epochs, accuracy is %5.3f and cost is %5.3f'%(epoch,acc_val,cost_val))

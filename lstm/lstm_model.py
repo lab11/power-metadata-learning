@@ -136,5 +136,6 @@ class Model():
     #Final code for the TensorBoard
     self.merged = tf.summary.merge_all()
     self.init_op = tf.global_variables_initializer()
+    self.saver = tf.train.Saver()
     print('Finished computation graph')
 
