@@ -127,9 +127,11 @@ def main(_):
     saver = tf.train.Saver()
 
     if(os.path.isfile(config.model_save_path)):
+        print("Restoring model from checkpoint")
         saver.restore(sess, config.model_save_path)
     else:
         sess.run(tf.global_variables_initializer())
+        print("No checkpoints found.")
 
 
     for i in range(20000):
