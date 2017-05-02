@@ -48,8 +48,10 @@ def main(_):
   #split the data 80/20
   train_data_train = train_data[:int(len(train_data)*0.8)]
   train_labels_train = train_labels[:int(len(train_data)*0.8)]
+  train_ids_train = train_ids[:int(len(train_data)*0.8)]
   train_data_validate = train_data[int(len(train_data)*0.8):]
   train_labels_validate = train_labels[int(len(train_data)*0.8):]
+  train_ids_validate = train_ids[int(len(train_data)*0.8):]
 
 
   #create an inverse logits ratio to scale the training to the number
@@ -59,12 +61,12 @@ def main(_):
   num_classes = len(bins)
   weight_vector = np.zeros(num_classes)
 
-  id_to_label = np.zeros(num_ids)
+  id_to_label = np.zeros(num_ids+1)
 
-  for i in range(0,num_ids):
+  for i in range(0,num_ids+1):
     index = np.where(train_ids == i)
-    if(len(index) > 0):
-      id_to_label[i] = train_labels[index[0]]
+    if(len(index[0]) > 0):
+      id_to_label[i] = train_labels[index[0][0]]
 
   id_to_lab = tf.constant(id_to_label)
 
@@ -169,9 +171,9 @@ def main(_):
     #every 100th iteration let's calculate the train and validation accuracy
     if i%100 == 0:
       train_accuracy, train_grouped,entropy = sess.run([accuracy,grouped_accuracy,cross_entropy],feed_dict={
-          x:train_data_train[test_nums], y_: train_labels_train[test_nums]})
+          x:train_data_train[test_nums], y_: train_labels_train[test_nums], ids: train_ids_train[test_nums]})
       validation_accuracy, val_grouped = sess.run([accuracy,grouped_accuracy],feed_dict={
-          x:train_data_train[test_nums], y_: train_labels_train[test_nums]})
+          x:train_data_train[test_nums], y_: train_labels_train[test_nums], ids:train_ids_validate})
 
       #train_accuracy = accuracy.eval(feed_dict={
       #    x:train_data_train[test_nums], y_: train_labels_train[test_nums]})
