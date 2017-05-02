@@ -8,6 +8,7 @@ import os
 import glob
 import sklearn as sk
 import sklearn.preprocessing as skp
+import imp
 
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
@@ -24,10 +25,9 @@ def bias_variable(shape):
   return tf.Variable(initial)
 
 def main(_):
-  import conv_config as config
+  config = imp.load_source('config',_[1])
   np.set_printoptions(threshold=np.nan)
   #instantiate a saver
-
 
   # Import data
   #import the data from the training numpy array
@@ -52,7 +52,7 @@ def main(_):
   train_data_validate = train_data[int(len(train_data)*0.8):]
   train_labels_validate = train_labels[int(len(train_data)*0.8):]
   train_ids_validate = train_ids[int(len(train_data)*0.8):]
-  
+
 
   #create an inverse logits ratio to scale the training to the number
   #of representations in the set
@@ -138,7 +138,7 @@ def main(_):
   preds = tf.argmax(y,1)
   correct = tf.equal(preds,tf.cast(y_,tf.int64))
   accuracy = tf.reduce_mean(tf.cast(correct,tf.float32))
-  
+
   one_hot_preds = tf.transpose(tf.one_hot(preds,num_classes))
   ids = tf.reshape(ids,[-1])
   one_hot_ids = tf.one_hot(ids,num_ids+1)
@@ -150,7 +150,7 @@ def main(_):
   filtered_labels = tf.boolean_mask(id_to_lab,not_included)
   grouped_correct = tf.equal(filtered_votes,filtered_labels)
   grouped_accuracy = tf.reduce_mean(tf.cast(grouped_correct,tf.float32))
-  
+
   saver = tf.train.Saver()
 
   if(len(glob.glob(config.model_save_path + ".*")) > 0):
@@ -182,11 +182,11 @@ def main(_):
       #    x:train_data_train[test_nums], y_: train_labels_train[test_nums]})
       #validation_accuracy = accuracy.eval(feed_dict={
       #    x:train_data_validate, y_: train_labels_validate})
-      print("Step {}, Training accuracy: {}, Validation accuracy: {}, Cross Entropy: {}".format(i, 
+      print("Step {}, Training accuracy: {}, Validation accuracy: {}, Cross Entropy: {}".format(i,
                                                                                  train_accuracy,validation_accuracy,entropy))
       print("Grouped Training accuracy: {}, Grouped Validation accuracy: {}".format(train_grouped,val_grouped))
       print("")
-      
+
       saver.save(sess, config.model_save_path)
 
       #print("Step {}, Validation accuracy: {}".format(i, validation_accuracy))
@@ -200,7 +200,8 @@ def main(_):
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
-  parser.add_argument('--data_dir', type=str, default='/tmp/tensorflow/mnist/input_data',
-                      help='Directory for storing input data')
+  parser.add_argument('--config', type=str, default='./conv_config.py',
+                      help='Configuration file')
   FLAGS, unparsed = parser.parse_known_args()
-  tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
+  args = parser.parse_args()
+  tf.app.run(main=main, argv=[sys.argv[0]] + [args.config])
