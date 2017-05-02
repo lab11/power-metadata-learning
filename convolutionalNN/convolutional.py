@@ -34,6 +34,9 @@ def main(_):
   train_data = np.load(config.train_data)
   train_data = train_data[:,:,0]
   train_labels = np.load(config.train_labels)
+  train_ids = np.load(config.train_ids)
+  unique_ids = np.unique(train_ids)
+  num_ids = np.max(unique_ids)
 
   #print(np.max(train_data))
   #print(np.min(train_data))
@@ -56,6 +59,15 @@ def main(_):
   num_classes = len(bins)
   weight_vector = np.zeros(num_classes)
 
+  id_to_label = np.zeros(num_ids)
+
+  for i in range(0,num_ids):
+    index = np.where(train_ids == i)
+    if(len(index) > 0):
+      id_to_label[i] = train_labels[index[0]]
+
+  id_to_lab = tf.constant(id_to_label)
+
   for i in range(0,len(counts)):
     weight_vector[i] = 1-(counts[i]/rep_sum)
 
@@ -67,6 +79,7 @@ def main(_):
   #generate two placeholder arrays for training and labels
   x = tf.placeholder(tf.float32, shape=[None, len(train_data[0])])
   y_ = tf.placeholder(tf.int32, shape=[None,1])
+  ids = tf.placeholder(tf.int32, shape=[None,1])
 
 
   x_data = tf.reshape(x,[-1,len(train_data[0]),1,1])
@@ -121,9 +134,18 @@ def main(_):
   cross_entropy = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y_,logits=y_w))
 
   train_step = tf.train.AdamOptimizer(0.1).minimize(cross_entropy)
-  correct = tf.equal(tf.argmax(y,1),tf.cast(y_,tf.int64))
+  preds = tf.argmax(y,1)
+  correct = tf.equal(preds,tf.cast(y_,tf.int64))
   accuracy = tf.reduce_mean(tf.cast(correct,tf.float32))
-
+  
+  one_hot_preds = tf.transpose(tf.one_hot(preds,num_classes))
+  one_hot_ids = tf.one_hot(ids,num_ids)
+  votes = tf.matmul(one_hot_preds,one_hot_ids)
+  votes = tf.transpose(votes)
+  not_included = tf.not_equal(tf.max(votes),0)
+  grouped_correct = tf.equal(tf.boolean_mask(tf.argmax(votes,1),not_included),tf.boolean_mask(id_to_lab,not_included))
+  grouped_accuracy = tf.reduce_mean(tf.cast(grouped_correct,tf.float32))
+  
   saver = tf.train.Saver()
 
   if(len(glob.glob(config.model_save_path + ".*")) > 0):
@@ -146,15 +168,18 @@ def main(_):
 
     #every 100th iteration let's calculate the train and validation accuracy
     if i%100 == 0:
-      train_accuracy = accuracy.eval(feed_dict={
+      train_accuracy, train_grouped,entropy = sess.run([accuracy,grouped_accuracy,cross_entropy],feed_dict={
           x:train_data_train[test_nums], y_: train_labels_train[test_nums]})
-      validation_accuracy = accuracy.eval(feed_dict={
-          x:train_data_validate, y_: train_labels_validate})
-      print("Step {}, Training accuracy: {}, Validation accuracy: {}".format(i, train_accuracy,validation_accuracy))
-      print(res.eval(feed_dict={x:train_data_train[test_nums]}))
-      print(y_.eval(feed_dict={y_:train_labels_train[test_nums]}))
-      print(cross_entropy.eval(feed_dict={x:train_data_train[test_nums], y_: train_labels_train[test_nums]}))
+      validation_accuracy, val_grouped = sess.run([accuracy,grouped_accuracy],feed_dict={
+          x:train_data_train[test_nums], y_: train_labels_train[test_nums]})
 
+      #train_accuracy = accuracy.eval(feed_dict={
+      #    x:train_data_train[test_nums], y_: train_labels_train[test_nums]})
+      #validation_accuracy = accuracy.eval(feed_dict={
+      #    x:train_data_validate, y_: train_labels_validate})
+      print("Step {}, Training accuracy: {}, Validation accuracy: {}".format(i, train_accuracy,validation_accuracy))
+      print(cross_entropy.eval(feed_dict={x:train_data_train[test_nums], y_: train_labels_train[test_nums]}))
+      
       saver.save(sess, config.model_save_path)
 
       #print("Step {}, Validation accuracy: {}".format(i, validation_accuracy))
