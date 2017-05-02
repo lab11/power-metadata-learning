@@ -25,7 +25,7 @@ def bias_variable(shape):
 
 def main(_):
   import conv_config as config
-
+  np.set_printoptions(threshold=np.nan)
   #instantiate a saver
 
 
@@ -43,7 +43,7 @@ def main(_):
   train_data = skp.normalize(train_data,axis=0)
 
   #shuffle the training data and labels
-  train_data, train_labels = sk.utils.shuffle(train_data,train_labels,random_state = 5)
+  train_data, train_labels, train_ids = sk.utils.shuffle(train_data,train_labels,train_ids,random_state = 5)
 
   #split the data 80/20
   train_data_train = train_data[:int(len(train_data)*0.8)]
@@ -52,7 +52,7 @@ def main(_):
   train_data_validate = train_data[int(len(train_data)*0.8):]
   train_labels_validate = train_labels[int(len(train_data)*0.8):]
   train_ids_validate = train_ids[int(len(train_data)*0.8):]
-
+  
 
   #create an inverse logits ratio to scale the training to the number
   #of representations in the set
@@ -68,7 +68,7 @@ def main(_):
     if(len(index[0]) > 0):
       id_to_label[i] = train_labels[index[0][0]]
 
-  id_to_lab = tf.constant(id_to_label)
+  id_to_lab = tf.constant(id_to_label,dtype=tf.int64)
 
   for i in range(0,len(counts)):
     weight_vector[i] = 1-(counts[i]/rep_sum)
@@ -126,7 +126,6 @@ def main(_):
   #these are the outputs
   y = tf.matmul(h1,W_fc2)+b_fc2
 
-  res = tf.argmax(y,1)
 
   #weight the outputs to inverse class frequency
   y_w = tf.multiply(y,tf.cast(class_weights,tf.float32))
@@ -135,7 +134,7 @@ def main(_):
   y_ = tf.reshape(y_,[-1])
   cross_entropy = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y_,logits=y_w))
 
-  train_step = tf.train.AdamOptimizer(0.1).minimize(cross_entropy)
+  train_step = tf.train.AdamOptimizer(1e-8).minimize(cross_entropy)
   preds = tf.argmax(y,1)
   correct = tf.equal(preds,tf.cast(y_,tf.int64))
   accuracy = tf.reduce_mean(tf.cast(correct,tf.float32))
@@ -145,8 +144,11 @@ def main(_):
   one_hot_ids = tf.one_hot(ids,num_ids+1)
   votes = tf.matmul(one_hot_preds,one_hot_ids)
   votes = tf.transpose(votes)
-  not_included = tf.not_equal(tf.reduce_max(votes,1),0)
-  grouped_correct = tf.equal(tf.boolean_mask(tf.argmax(votes,1),not_included),tf.boolean_mask(id_to_lab,not_included))
+  good_votes = tf.reduce_max(votes,1)
+  not_included = tf.not_equal(good_votes,0)
+  filtered_votes = tf.boolean_mask(tf.argmax(votes,1),not_included)
+  filtered_labels = tf.boolean_mask(id_to_lab,not_included)
+  grouped_correct = tf.equal(filtered_votes,filtered_labels)
   grouped_accuracy = tf.reduce_mean(tf.cast(grouped_correct,tf.float32))
   
   saver = tf.train.Saver()
@@ -171,17 +173,19 @@ def main(_):
 
     #every 100th iteration let's calculate the train and validation accuracy
     if i%100 == 0:
-      train_accuracy, train_grouped,entropy = sess.run([accuracy,grouped_accuracy,cross_entropy],feed_dict={
+      train_accuracy, train_grouped, entropy, train_votes, train_filtered_votes, train_preds = sess.run([accuracy,grouped_accuracy,cross_entropy,votes,filtered_votes, preds],feed_dict={
           x:train_data_train[test_nums], y_: train_labels_train[test_nums], ids: train_ids_train[test_nums]})
-      validation_accuracy, val_grouped = sess.run([accuracy,grouped_accuracy],feed_dict={
-          x:train_data_train[test_nums], y_: train_labels_train[test_nums], ids:train_ids_validate})
+      validation_accuracy, val_grouped,val_votes, val_filtered_votes,val_preds = sess.run([accuracy,grouped_accuracy,votes,filtered_votes,preds],feed_dict={
+          x:train_data_validate, y_: train_labels_validate, ids:train_ids_validate})
 
       #train_accuracy = accuracy.eval(feed_dict={
       #    x:train_data_train[test_nums], y_: train_labels_train[test_nums]})
       #validation_accuracy = accuracy.eval(feed_dict={
       #    x:train_data_validate, y_: train_labels_validate})
-      print("Step {}, Training accuracy: {}, Validation accuracy: {}".format(i, train_accuracy,validation_accuracy))
-      print(cross_entropy.eval(feed_dict={x:train_data_train[test_nums], y_: train_labels_train[test_nums]}))
+      print("Step {}, Training accuracy: {}, Validation accuracy: {}, Cross Entropy: {}".format(i, 
+                                                                                 train_accuracy,validation_accuracy,entropy))
+      print("Grouped Training accuracy: {}, Grouped Validation accuracy: {}".format(train_grouped,val_grouped))
+      print("")
       
       saver.save(sess, config.model_save_path)
 
