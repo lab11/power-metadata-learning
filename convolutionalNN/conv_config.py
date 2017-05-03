@@ -30,3 +30,6 @@ hidden1_size = 1024
 
 #dropout
 keep_prob = 0.5
+
+#learning rate
+lr = 1e-4

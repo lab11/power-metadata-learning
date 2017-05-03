@@ -144,11 +144,11 @@ def main(_):
   y_ = tf.reshape(y_,[-1])
   cross_entropy = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y_,logits=y_w))
 
-  train_step = tf.train.AdamOptimizer(1e-8).minimize(cross_entropy)
+  train_step = tf.train.AdamOptimizer(config.lr).minimize(cross_entropy)
   preds = tf.argmax(y,1)
   correct = tf.equal(preds,tf.cast(y_,tf.int64))
   accuracy = tf.reduce_mean(tf.cast(correct,tf.float32))
-	
+
   #this stuff allows us to calaculate device grouped accuracy
   one_hot_preds = tf.transpose(tf.one_hot(preds,num_classes))
   ids = tf.reshape(ids,[-1])
@@ -163,7 +163,7 @@ def main(_):
   grouped_correct = tf.equal(filtered_votes,filtered_labels)
   grouped_accuracy = tf.reduce_mean(tf.cast(grouped_correct,tf.float32))
 
-  #this allows us to show a confusion matrix 
+  #this allows us to show a confusion matrix
   one_hot_voted_labels = tf.one_hot(voted_labels,num_classes)
   zone_hot_voted_labels = tf.where(not_included,one_hot_voted_labels,tf.cast(tf.zeros((num_ids+1,num_classes)),tf.float32))
   one_hot_votes = tf.transpose(zone_hot_voted_labels)
