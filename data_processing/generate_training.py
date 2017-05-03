@@ -125,31 +125,31 @@ for key in labelToFilenames:
         numPoints += data.shape[0]*data.shape[1]
 
     numTries = 0
-    while numTries < 1000:
-        pick = np.random.choice(numFiles, int(np.ceil(numFiles * unseenTestRatio)), False)
-        unseenDevices = [devices[i] for i in pick]
-        unseenNumPoints = 0
-        for device in unseenDevices:
-            unseenNumPoints += device.shape[0] * device.shape[1]
-        #print(pick)
-        if unseenNumPoints/numPoints > (unseenTestRatio - .1) and \
-            unseenNumPoints/numPoints < (unseenTestRatio + .1):
-            print(key + ' pick represents {:.2g}'.format(unseenNumPoints/numPoints))
-            labelToUnseen[key] = unseenDevices
-            labelToUnseenID[key] = [deviceids[i] for i in pick]
-            labelToTrain[key] = [devices[i] for i in set(range(len(devices))) - set(pick)]
-            labelToTrainID[key] = [deviceids[i] for i in set(range(len(devices))) - set(pick)]
-            break;
-        numTries += 1
-    if key not in labelToUnseen:
-        print('Failed to choose unseen device(s) for ' + key)
-        for i,device in enumerate(devices):
-            print("device {} consists of {:.2}".format(i, device.shape[0]*device.shape[1]/numPoints))
-        pick = [int(i) for i in input('user pick: ').split()]
-        labelToUnseen[key] = [devices[i] for i in pick]
-        labelToUnseenID[key] = [deviceids[i] for i in pick]
-        labelToTrain[key] = [devices[i] for i in set(range(len(devices))) - set(pick)]
-        labelToTrainID[key] = [deviceids[i] for i in set(range(len(devices))) - set(pick)]
+    #while numTries < 1000:
+    #    pick = np.random.choice(numFiles, int(np.ceil(numFiles * unseenTestRatio)), False)
+    #    unseenDevices = [devices[i] for i in pick]
+    #    unseenNumPoints = 0
+    #    for device in unseenDevices:
+    #        unseenNumPoints += device.shape[0] * device.shape[1]
+    #    #print(pick)
+    #    if unseenNumPoints/numPoints > (unseenTestRatio - .1) and \
+    #        unseenNumPoints/numPoints < (unseenTestRatio + .1):
+    #        print(key + ' pick represents {:.2g}'.format(unseenNumPoints/numPoints))
+    #        labelToUnseen[key] = unseenDevices
+    #        labelToUnseenID[key] = [deviceids[i] for i in pick]
+    #        labelToTrain[key] = [devices[i] for i in set(range(len(devices))) - set(pick)]
+    #        labelToTrainID[key] = [deviceids[i] for i in set(range(len(devices))) - set(pick)]
+    #        break;
+    #    numTries += 1
+    #if key not in labelToUnseen:
+    #    print('Failed to choose unseen device(s) for ' + key)
+    for i,device in enumerate(devices):
+        print("device {} consists of {:.2}".format(i, device.shape[0]*device.shape[1]/numPoints))
+    pick = [int(i) for i in input('user pick: ').split()]
+    labelToUnseen[key] = [devices[i] for i in pick]
+    labelToUnseenID[key] = [deviceids[i] for i in pick]
+    labelToTrain[key] = [devices[i] for i in set(range(len(devices))) - set(pick)]
+    labelToTrainID[key] = [deviceids[i] for i in set(range(len(devices))) - set(pick)]
 
 
 labelToTest = {}
