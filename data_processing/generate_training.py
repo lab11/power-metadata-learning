@@ -16,7 +16,13 @@ import matplotlib.pyplot as plt
 
 SEC_IN_DAY = 24*60*60
 
+seenTestRatio = .2
 unseenTestRatio = .2
+
+smallLabels = ['Blender', 'Blowdryer', 'CableBox', 'Coffee', 'CurlingIronStraightener', 'Light',
+        'ExteriorLight', 'Fan', 'Refrigerator', 'LaptopComputer',
+        'Microwave', 'RouterModemSwitch', 'PhoneCharger', 'Television',
+        'Toaster']
 
 parser = argparse.ArgumentParser(description='Process data input files')
 parser.add_argument('inputdir', metavar='I', type=str,
@@ -25,6 +31,7 @@ parser.add_argument('labelFile', metavar='L', type=str,
                     help='A file with a comma separated list of labels')
 parser.add_argument('outputdir', metavar='O', type=str,
                     help='Directory to output training and unseen npy array files')
+parser.add_argument('--small', dest='small', action='store_true', help="Use a smaller dataset (15 devices)")
 
 args = parser.parse_args()
 
@@ -58,8 +65,11 @@ def concatenate_arrays(l2d, l2id):
     return data, labels, ids
 
 #read the labels file and make a dict of lists
-labelFile = open(args.labelFile,'r')
-labels = labelFile.readline().strip().split(',')
+if not args.small:
+    labelFile = open(args.labelFile,'r')
+    labels = labelFile.readline().strip().split(',')
+else:
+    labels = smallLabels
 
 labelToFilenames = {}
 labelToID = {}
@@ -75,7 +85,7 @@ for i,label in enumerate(labels):
 dataFiles = os.listdir(args.inputdir)
 
 for dataFile in dataFiles:
-    devid = dataFile.split('_')[0]
+    devid = int(dataFile.split('_')[0])
     label = dataFile.split('_')[1].split('.')[0]
     if(label in labelToFilenames):
         labelToFilenames[label].append(dataFile)
@@ -93,12 +103,12 @@ for key in labelToFilenames:
     numFiles = len(labelToFilenames[key])
     print("{}: {} files".format(key,numFiles))
 
-print('\nGenerate unseen set')
-
 labelToUnseen = {}
 labelToUnseenID = {}
 labelToTrain = {}
 labelToTrainID = {}
+
+print('\nGenerate unseen set')
 for key in labelToFilenames:
     numFiles = len(labelToFilenames[key])
     if numFiles <= 2:
@@ -141,20 +151,51 @@ for key in labelToFilenames:
         labelToTrain[key] = [devices[i] for i in set(range(len(devices))) - set(pick)]
         labelToTrainID[key] = [deviceids[i] for i in set(range(len(devices))) - set(pick)]
 
+
+labelToTest = {}
+labelToTestID = {}
+print('\nGenerate seen test set')
+for key in labelToFilenames:
+    numFiles = len(labelToFilenames[key])
+    if numFiles <= 2:
+        print('No files for label ' + key + ', skipping...')
+        continue
+    print('Attempting to partition ' + key)
+
+    labelToTest[key] = []
+    labelToTestID[key] = []
+
+    devices = labelToTrain[key][:]
+    labelToTrain[key] = []
+    deviceids = labelToTrainID[key][:]
+    labelToTrainID[key] = []
+
+    for i in range(len(devices)):
+        # pick % of device days
+        pick = np.random.choice(devices[i].shape[0], int(np.ceil(devices[i].shape[0] * seenTestRatio)), False)
+        labelToTest[key].append(devices[i][pick])
+        labelToTestID[key].append(deviceids[i])
+        labelToTrain[key].append(devices[i][list(set(range(len(devices[i]))) - set(pick))])
+        labelToTrainID[key].append(deviceids[i])
+
 # concatenate sets
-print('\nGenerating numpy arrays for test and unseen')
+print('\nGenerating numpy arrays for train, test, and unseen')
 print('  Working on training set')
 train,trainLabels,trainID = concatenate_arrays(labelToTrain,labelToTrainID)
+print('  Working on test set')
+test,testLabels,testID= concatenate_arrays(labelToTest,labelToTestID)
 print('  Working on unseen set')
 unseen,unseenLabels,unseenID = concatenate_arrays(labelToUnseen,labelToUnseenID)
 
 print(train.shape)
 print(trainLabels.shape)
 print(trainID.shape)
+print(test.shape)
+print(testLabels.shape)
+print(testID.shape)
 print(unseen.shape)
 print(unseenLabels.shape)
 print(unseenID.shape)
-
 #maxs = np.max(train[:,:,0], 1)
 #zeros = []
 #for i,x in enumerate(maxs):
@@ -166,6 +207,9 @@ print(unseenID.shape)
 np.save(args.outputdir + '/' + 'train', train)
 np.save(args.outputdir + '/' + 'trainLabels', trainLabels)
 np.save(args.outputdir + '/' + 'trainID', trainID)
+np.save(args.outputdir + '/' + 'test', train)
+np.save(args.outputdir + '/' + 'testLabels', trainLabels)
+np.save(args.outputdir + '/' + 'testID', trainID)
 np.save(args.outputdir + '/' + 'unseen', unseen)
 np.save(args.outputdir + '/' + 'unseenLabels', unseenLabels)
 np.save(args.outputdir + '/' + 'unseenID', unseenID)
