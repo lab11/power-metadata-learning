@@ -111,9 +111,9 @@ deviceName,deviceMAC,deviceType,category,room,startTime,endTime,Label
 123,c098e570019C,Desk lamp,Lighting,Bedroom 1,2017-02-26 00:00:00,2017-04-27 23:59:59,Light
 124,c098e57001B5,Desk lamp,Lighting,Bedroom 1,2017-02-26 00:00:00,2017-04-27 23:59:59,Light
 125,c098e57001c2,Desk lamp,Lighting,Bedroom 2,2017-03-10 00:00:00,2017-04-17 23:59:59,Light
-126,c098e5700193,Exterior lighting,Lighting,Kitchen,2017-02-26 00:00:00,2017-04-27 23:59:59,Light
-127,c098e5700195,Exterior lighting,Lighting,Study,2017-02-26 00:00:00,2017-04-27 23:59:59,Light
-128,c098e570020d,Exterior lighting,Lighting,Porch,2017-03-27 00:00:00,2017-04-18 23:59:59,Light
+126,c098e5700193,Exterior lighting,Lighting,Kitchen,2017-02-26 00:00:00,2017-04-27 23:59:59,ExteriorLight
+127,c098e5700195,Exterior lighting,Lighting,Study,2017-02-26 00:00:00,2017-04-27 23:59:59,ExteriorLight
+128,c098e570020d,Exterior lighting,Lighting,Porch,2017-03-27 00:00:00,2017-04-18 23:59:59,ExteriorLight
 129,c098e5700066,Small lamp-light,Lighting,NULL,2016-10-17 00:00:00,2016-10-24 23:59:59,Light
 130,c098e5700082,Small lamp-light,Lighting,Living Room,2016-12-20 00:00:00,2016-12-26 23:59:59,Light
 131,c098e57000C6,Small lamp-light,Lighting,Bedroom 2,2016-07-22 00:00:00,2017-01-05 23:59:59,Light
