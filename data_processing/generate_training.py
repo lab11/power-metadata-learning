@@ -172,6 +172,7 @@ for key in labelToFilenames:
 
     for i in range(len(devices)):
         # pick % of device days
+        if devices[i].shape[0] == 0: continue
         pick = np.random.choice(devices[i].shape[0], int(np.ceil(devices[i].shape[0] * seenTestRatio)), False)
         labelToTest[key].append(devices[i][pick])
         labelToTestID[key].append(deviceids[i])
