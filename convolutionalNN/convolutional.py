@@ -40,6 +40,7 @@ def main(_):
       if(config.test):
         test_data = np.load(config.test_data)
         test_data = test_data[:,:,0]
+        test_data = skp.normalize(test_data,axis=0)
         test_labels = np.load(config.test_labels)
         test_ids = np.load(config.test_ids)
 
