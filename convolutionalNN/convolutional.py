@@ -120,7 +120,7 @@ def main(_):
   #first hidden layer
   h1 = tf.nn.relu(tf.matmul(pool2_flat,W_fc1)+b_fc1)
 
-  keep_prob = tf.contant(config.keep_prob,dtype=tf.float32)
+  keep_prob = tf.constant(config.keep_prob,dtype=tf.float32)
   h1_drop = tf.nn.dropout(h1,keep_prob)
 
   W_fc2 = weight_variable([config.hidden1_size,num_classes])
@@ -137,7 +137,7 @@ def main(_):
   y_ = tf.reshape(y_,[-1])
   cross_entropy = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y_,logits=y_w))
 
-  train_step = tf.train.AdamOptimizer(1e-8).minimize(cross_entropy)
+  train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
   preds = tf.argmax(y,1)
   correct = tf.equal(preds,tf.cast(y_,tf.int64))
   accuracy = tf.reduce_mean(tf.cast(correct,tf.float32))
