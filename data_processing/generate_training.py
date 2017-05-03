@@ -20,7 +20,7 @@ seenTestRatio = .2
 unseenTestRatio = .2
 
 smallLabels = ['Blender', 'Blowdryer', 'CableBox', 'CoffeeMaker',
-        'CurlingIronStraightener', 'ComputerMonitor', 'Light', 'ExteriorLight',
+        'CurlingIronStraightener', 'PhoneCharger', 'Light',
         'Fan', 'Refrigerator', 'LaptopComputer', 'Microwave',
         'RouterModemSwitch', 'PhoneCharger', 'Television', 'Toaster']
 
