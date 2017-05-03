@@ -26,7 +26,7 @@ def bias_variable(shape):
 
 def main(_):
   config = imp.load_source('config',_[1])
-  np.set_printoptions(threshold=np.nan)
+  np.set_printoptions(threshold=np.nan,linewidth=200)
   #instantiate a saver
 
   # Import data
@@ -35,6 +35,13 @@ def main(_):
   train_data = train_data[:,:,0]
   train_labels = np.load(config.train_labels)
   train_ids = np.load(config.train_ids)
+
+  if(hasattr(config, 'test')):
+      if(config.test):
+        test_data = np.load(config.test_data)
+        test_labels = np.load(config.test_labels)
+        test_ids = np.load(config.test_ids)
+
   unique_ids = np.unique(train_ids)
   num_ids = np.max(unique_ids)
 
@@ -137,11 +144,12 @@ def main(_):
   y_ = tf.reshape(y_,[-1])
   cross_entropy = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y_,logits=y_w))
 
-  train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
+  train_step = tf.train.AdamOptimizer(1e-8).minimize(cross_entropy)
   preds = tf.argmax(y,1)
   correct = tf.equal(preds,tf.cast(y_,tf.int64))
   accuracy = tf.reduce_mean(tf.cast(correct,tf.float32))
-
+	
+  #this stuff allows us to calaculate device grouped accuracy
   one_hot_preds = tf.transpose(tf.one_hot(preds,num_classes))
   ids = tf.reshape(ids,[-1])
   one_hot_ids = tf.one_hot(ids,num_ids+1)
@@ -149,10 +157,18 @@ def main(_):
   votes = tf.transpose(votes)
   good_votes = tf.reduce_max(votes,1)
   not_included = tf.not_equal(good_votes,0)
-  filtered_votes = tf.boolean_mask(tf.argmax(votes,1),not_included)
+  voted_labels = tf.argmax(votes,1)
+  filtered_votes = tf.boolean_mask(voted_labels,not_included)
   filtered_labels = tf.boolean_mask(id_to_lab,not_included)
   grouped_correct = tf.equal(filtered_votes,filtered_labels)
   grouped_accuracy = tf.reduce_mean(tf.cast(grouped_correct,tf.float32))
+
+  #this allows us to show a confusion matrix 
+  one_hot_voted_labels = tf.one_hot(voted_labels,num_classes)
+  zone_hot_voted_labels = tf.where(not_included,one_hot_voted_labels,tf.cast(tf.zeros((num_ids+1,num_classes)),tf.float32))
+  one_hot_votes = tf.transpose(zone_hot_voted_labels)
+  one_hot_labels = tf.one_hot(id_to_lab,num_classes)
+  confusion_matrix = tf.matmul(one_hot_votes,one_hot_labels)
 
   saver = tf.train.Saver()
 
@@ -162,7 +178,6 @@ def main(_):
   else:
       sess.run(tf.global_variables_initializer())
       print("No checkpoints found.")
-
 
   for i in range(20000):
     #get a batch of 100 random training points from the training set
@@ -176,30 +191,33 @@ def main(_):
 
     #every 100th iteration let's calculate the train and validation accuracy
     if i%100 == 0:
-      train_accuracy, train_grouped, entropy, train_votes, train_filtered_votes, train_preds = sess.run([accuracy,grouped_accuracy,cross_entropy,votes,filtered_votes, preds],feed_dict={
-          x:train_data_train[test_nums], y_: train_labels_train[test_nums], ids: train_ids_train[test_nums]})
-      validation_accuracy, val_grouped,val_votes, val_filtered_votes,val_preds = sess.run([accuracy,grouped_accuracy,votes,filtered_votes,preds],feed_dict={
-          x:train_data_validate, y_: train_labels_validate, ids:train_ids_validate})
+      train_accuracy, train_grouped, entropy, train_confusion = sess.run([accuracy,grouped_accuracy,cross_entropy,confusion_matrix],
+                  feed_dict={x:train_data_train[test_nums], y_: train_labels_train[test_nums], ids: train_ids_train[test_nums]})
+      validation_accuracy, val_grouped,val_confusion = sess.run([accuracy,grouped_accuracy,confusion_matrix],
+                  feed_dict={x:train_data_validate, y_: train_labels_validate, ids:train_ids_validate})
 
-      #train_accuracy = accuracy.eval(feed_dict={
-      #    x:train_data_train[test_nums], y_: train_labels_train[test_nums]})
-      #validation_accuracy = accuracy.eval(feed_dict={
-      #    x:train_data_validate, y_: train_labels_validate})
       print("Step {}, Training accuracy: {}, Validation accuracy: {}, Cross Entropy: {}".format(i,
                                                                                  train_accuracy,validation_accuracy,entropy))
       print("Grouped Training accuracy: {}, Grouped Validation accuracy: {}".format(train_grouped,val_grouped))
       print("")
 
-      saver.save(sess, config.model_save_path)
+      print("Training conufsion matrix")
+      print(train_confusion)
+      print("Validation conufsion matrix")
+      print(val_confusion)
 
-      #print("Step {}, Validation accuracy: {}".format(i, validation_accuracy))
+      saver.save(sess, config.model_save_path)
 
     #then train on the batch
     train_step.run(feed_dict={x: train_data_train[batch_nums], y_: train_labels_train[batch_nums]})
 
-  #do something to evaluate test accuracy at the end
-  #print("test accuracy %g"%accuracy.eval(feed_dict={
-  #  x: mnist.test.images, y_: mnist.test.labels}))
+  if(hasattr(config,'test')):
+    if(config.test):
+      test_accuracy, test_grouped, test_confusion = sess.run([accuracy,grouped_accuracy,confusion_matrix],
+                    feed_dict={x:test_data, y_: test_labels, ids: test_ids})
+      print("Test accuracy: {}, test accuracy grouped: {}".format(test_accuracy,test_grouped))
+      print(test_confusion)
+
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
