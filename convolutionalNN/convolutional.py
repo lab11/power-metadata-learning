@@ -40,7 +40,8 @@ def main(_):
     if(config.test):
       test_data = np.load(config.test_data)
       test_data = test_data[:,:,0]
-      test_data = skp.normalize(test_data,axis=0)
+      #test_data = skp.normalize(test_data,axis=0)
+      test_data = test_data/4000
       test_labels = np.load(config.test_labels)
       test_ids = np.load(config.test_ids)
 
@@ -91,7 +92,7 @@ def main(_):
         index = np.where(test_ids == i)
         if(len(index[0]) > 0):
           id_to_label[i] = test_labels[index[0][0]]
-  
+
 
   id_to_lab = tf.constant(id_to_label,dtype=tf.int64)
 
