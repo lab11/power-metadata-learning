@@ -208,15 +208,15 @@ def main(_):
 
       saver.save(sess, config.model_save_path)
 
+      if(hasattr(config,'test')):
+        if(config.test):
+          test_accuracy, test_grouped, test_confusion = sess.run([accuracy,grouped_accuracy,confusion_matrix],
+                        feed_dict={x:test_data, y_: test_labels, ids: test_ids})
+          print("Test accuracy: {}, test accuracy grouped: {}".format(test_accuracy,test_grouped))
+          print(test_confusion)
+
     #then train on the batch
     train_step.run(feed_dict={x: train_data_train[batch_nums], y_: train_labels_train[batch_nums]})
-
-  if(hasattr(config,'test')):
-    if(config.test):
-      test_accuracy, test_grouped, test_confusion = sess.run([accuracy,grouped_accuracy,confusion_matrix],
-                    feed_dict={x:test_data, y_: test_labels, ids: test_ids})
-      print("Test accuracy: {}, test accuracy grouped: {}".format(test_accuracy,test_grouped))
-      print(test_confusion)
 
 
 if __name__ == '__main__':
