@@ -25,7 +25,9 @@ dataset_config = config['Datasets']
 logging_config = config['Logging']
 direc = dataset_config['directory']
 log_dir = logging_config['log_directory']
-model_path = logging_config['model_path']
+model_path = logging_config['model_path'] + '/model'
+if not os.path.exists(model_path):
+    os.makedirs(model_path)
 
 # Generate run name
 start_time = str(datetime.now()).replace(" ", "_")
