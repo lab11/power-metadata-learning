@@ -19,10 +19,10 @@ SEC_IN_DAY = 24*60*60
 seenTestRatio = .2
 unseenTestRatio = .2
 
-smallLabels = ['Blender', 'Blowdryer', 'CableBox', 'Coffee', 'CurlingIronStraightener', 'Light',
-        'ExteriorLight', 'Fan', 'Refrigerator', 'LaptopComputer',
-        'Microwave', 'RouterModemSwitch', 'PhoneCharger', 'Television',
-        'Toaster']
+smallLabels = ['Blender', 'Blowdryer', 'CableBox', 'CoffeeMaker',
+        'CurlingIronStraightener', 'ComputerMonitor', 'Light', 'ExteriorLight',
+        'Fan', 'Refrigerator', 'LaptopComputer', 'Microwave',
+        'RouterModemSwitch', 'PhoneCharger', 'Television', 'Toaster']
 
 parser = argparse.ArgumentParser(description='Process data input files')
 parser.add_argument('inputdir', metavar='I', type=str,
@@ -31,7 +31,7 @@ parser.add_argument('labelFile', metavar='L', type=str,
                     help='A file with a comma separated list of labels')
 parser.add_argument('outputdir', metavar='O', type=str,
                     help='Directory to output training and unseen npy array files')
-parser.add_argument('--small', dest='small', action='store_true', help="Use a smaller dataset (15 devices)")
+parser.add_argument('--small', dest='small', action='store_true', help="Use a smaller dataset :\n" + str(smallLabels))
 
 args = parser.parse_args()
 
