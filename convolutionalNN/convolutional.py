@@ -37,12 +37,12 @@ def main(_):
   train_ids = np.load(config.train_ids)
 
   if(hasattr(config, 'test')):
-      if(config.test):
-        test_data = np.load(config.test_data)
-        test_data = test_data[:,:,0]
-        test_data = skp.normalize(test_data,axis=0)
-        test_labels = np.load(config.test_labels)
-        test_ids = np.load(config.test_ids)
+    if(config.test):
+      test_data = np.load(config.test_data)
+      test_data = test_data[:,:,0]
+      test_data = skp.normalize(test_data,axis=0)
+      test_labels = np.load(config.test_labels)
+      test_ids = np.load(config.test_ids)
 
   unique_ids = np.unique(train_ids)
   num_ids = np.max(unique_ids)
@@ -72,10 +72,20 @@ def main(_):
 
   id_to_label = np.zeros(num_ids+1)
 
+  #make an id to label array for the training data
   for i in range(0,num_ids+1):
     index = np.where(train_ids == i)
     if(len(index[0]) > 0):
       id_to_label[i] = train_labels[index[0][0]]
+
+  #make an id to label array for the test data if it exists
+  if(hasattr(config, 'test')):
+    if(config.test):
+      for i in range(0,num_ids+1):
+        index = np.where(test_ids == i)
+        if(len(index[0]) > 0):
+          id_to_label[i] = test_labels[index[0][0]]
+  
 
   id_to_lab = tf.constant(id_to_label,dtype=tf.int64)
 
