@@ -49,7 +49,13 @@ def main(_):
 
   #print(np.max(train_data))
   #print(np.min(train_data))
-  train_data = skp.normalize(train_data,axis=0)
+  #std_scale = preprocessing.StandardScaler().fit(train_data)
+  #train_data = std_scale.transform(train_data)
+  #train_data = skp.normalize(train_data,axis=0)
+
+  #I think we need a new way of normalizing
+  #no data should be over 4000 watts
+  train_data = train_data/4000
 
   #shuffle the training data and labels
   train_data, train_labels, train_ids = sk.utils.shuffle(train_data,train_labels,train_ids,random_state = 5)
