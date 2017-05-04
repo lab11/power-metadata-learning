@@ -19,10 +19,14 @@ SEC_IN_DAY = 24*60*60
 seenTestRatio = .2
 unseenTestRatio = .2
 
-smallLabels = ['Blender', 'Blowdryer', 'CableBox', 'CoffeeMaker',
-        'CurlingIronStraightener', 'PhoneCharger', 'Light',
+largeLabels = ['Blender', 'Blowdryer', 'CableBox', 'CoffeeMaker',
+        'CurlingIronStraightener', 'Light',
         'Fan', 'Refrigerator', 'LaptopComputer', 'Microwave',
         'RouterModemSwitch', 'PhoneCharger', 'Television', 'Toaster']
+smallLabels = ['Television', 'Refrigerator', 'Microwave', 'LaptopComputer',
+        'CableBox', 'PhoneCharger', 'Toaster', 'CoffeeMaker', 'Light']
+
+houseUniqueID = [4, 16, 21, 35, 61, 62, 82, 208, 104, 105, 106, 107, 109, 169, 231, 233, 219, 232, 215, 190, 191, 196, 257, 264, 276, 132, 133, 151, 152, 149, 150, 125, 135]
 
 parser = argparse.ArgumentParser(description='Process data input files')
 parser.add_argument('inputdir', metavar='I', type=str,
@@ -31,7 +35,8 @@ parser.add_argument('labelFile', metavar='L', type=str,
                     help='A file with a comma separated list of labels')
 parser.add_argument('outputdir', metavar='O', type=str,
                     help='Directory to output training and unseen npy array files')
-parser.add_argument('--small', dest='small', action='store_true', help="Use a smaller dataset :\n" + str(smallLabels))
+parser.add_argument('-size', type=str, default='full', help="Use a 'large', 'small', or 'full' label set")
+parser.add_argument('--house', dest='house', action='store_true', help="Use a single house deployment as the unique set")
 
 args = parser.parse_args()
 
@@ -65,11 +70,13 @@ def concatenate_arrays(l2d, l2id):
     return data, labels, ids
 
 #read the labels file and make a dict of lists
-if not args.small:
+if args.size == 'small':
+    labels = smallLabels
+elif args.size == 'large':
+    labels = largeLabels
+else:
     labelFile = open(args.labelFile,'r')
     labels = labelFile.readline().strip().split(',')
-else:
-    labels = smallLabels
 
 labelToFilenames = {}
 labelToID = {}
@@ -118,39 +125,51 @@ for key in labelToFilenames:
 
     devices = labelToData[key]
     deviceids = labelToID[key]
+    if not args.house:
+        # count number of points for this device
+        numPoints = 0
+        for data in devices:
+            numPoints += data.shape[0]*data.shape[1]
 
-    # count number of points for this device
-    numPoints = 0
-    for data in devices:
-        numPoints += data.shape[0]*data.shape[1]
-
-    numTries = 0
-    #while numTries < 1000:
-    #    pick = np.random.choice(numFiles, int(np.ceil(numFiles * unseenTestRatio)), False)
-    #    unseenDevices = [devices[i] for i in pick]
-    #    unseenNumPoints = 0
-    #    for device in unseenDevices:
-    #        unseenNumPoints += device.shape[0] * device.shape[1]
-    #    #print(pick)
-    #    if unseenNumPoints/numPoints > (unseenTestRatio - .1) and \
-    #        unseenNumPoints/numPoints < (unseenTestRatio + .1):
-    #        print(key + ' pick represents {:.2g}'.format(unseenNumPoints/numPoints))
-    #        labelToUnseen[key] = unseenDevices
-    #        labelToUnseenID[key] = [deviceids[i] for i in pick]
-    #        labelToTrain[key] = [devices[i] for i in set(range(len(devices))) - set(pick)]
-    #        labelToTrainID[key] = [deviceids[i] for i in set(range(len(devices))) - set(pick)]
-    #        break;
-    #    numTries += 1
-    #if key not in labelToUnseen:
-    #    print('Failed to choose unseen device(s) for ' + key)
-    for i,device in enumerate(devices):
-        print("device {} consists of {:.2}".format(i, device.shape[0]*device.shape[1]/numPoints))
-    pick = [int(i) for i in input('user pick: ').split()]
-    labelToUnseen[key] = [devices[i] for i in pick]
-    labelToUnseenID[key] = [deviceids[i] for i in pick]
-    labelToTrain[key] = [devices[i] for i in set(range(len(devices))) - set(pick)]
-    labelToTrainID[key] = [deviceids[i] for i in set(range(len(devices))) - set(pick)]
-
+        numTries = 0
+        while numTries < 1000:
+            pick = np.random.choice(numFiles, int(np.ceil(numFiles * unseenTestRatio)), False)
+            unseenDevices = [devices[i] for i in pick]
+            unseenNumPoints = 0
+            for device in unseenDevices:
+                unseenNumPoints += device.shape[0] * device.shape[1]
+            #print(pick)
+            if unseenNumPoints/numPoints > (unseenTestRatio - .1) and \
+                unseenNumPoints/numPoints < (unseenTestRatio + .1):
+                print(key + ' pick represents {:.2g}'.format(unseenNumPoints/numPoints))
+                labelToUnseen[key] = unseenDevices
+                labelToUnseenID[key] = [deviceids[i] for i in pick]
+                labelToTrain[key] = [devices[i] for i in set(range(len(devices))) - set(pick)]
+                labelToTrainID[key] = [deviceids[i] for i in set(range(len(devices))) - set(pick)]
+                break;
+            numTries += 1
+        if key not in labelToUnseen:
+            print('Failed to choose unseen device(s) for ' + key)
+            for i,device in enumerate(devices):
+                print("device {} consists of {:.2}".format(i, device.shape[0]*device.shape[1]/numPoints))
+            pick = [int(i) for i in input('user pick: ').split()]
+            labelToUnseen[key] = [devices[i] for i in pick]
+            labelToUnseenID[key] = [deviceids[i] for i in pick]
+            labelToTrain[key] = [devices[i] for i in set(range(len(devices))) - set(pick)]
+            labelToTrainID[key] = [deviceids[i] for i in set(range(len(devices))) - set(pick)]
+    else:
+        labelToUnseen[key] = []
+        labelToUnseenID[key] = []
+        labelToTrain[key] = []
+        labelToTrainID[key] = []
+        for i in range(len(devices)):
+            if deviceids[i] in houseUniqueID:
+                devcount += 1
+                labelToUnseen[key].append(devices[i])
+                labelToUnseenID[key].append(deviceids[i])
+            else:
+                labelToTrain[key].append(devices[i])
+                labelToTrainID[key].append(deviceids[i])
 
 labelToTest = {}
 labelToTestID = {}
