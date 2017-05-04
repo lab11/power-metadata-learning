@@ -32,7 +32,12 @@ def main(_):
   # Import data
   #import the data from the training numpy array
   train_data = np.load(config.train_data)
-  train_data = train_data[:,:,0]
+  if(~config.use_pf):
+    train_data = train_data[:,:,0]
+    train_data = train_data/4000
+  else:
+    train_data[:,:,0] = train_data[:,:,0]/4000
+
   train_labels = np.load(config.train_labels)
   train_ids = np.load(config.train_ids)
 
@@ -41,9 +46,13 @@ def main(_):
     if(config.test):
       test = True
       test_data = np.load(config.test_data)
-      test_data = test_data[:,:,0]
+      if(~config.use_pf):
+        test_data = test_data[:,:,0]
+        test_data = test_data/4000
+      else:
+        test_data[:,:,0] = test_data[:,:,0]/4000
+
       #test_data = skp.normalize(test_data,axis=0)
-      test_data = test_data/4000
       test_labels = np.load(config.test_labels)
       test_ids = np.load(config.test_ids)
 
@@ -55,12 +64,6 @@ def main(_):
   #std_scale = preprocessing.StandardScaler().fit(train_data)
   #train_data = std_scale.transform(train_data)
   #train_data = skp.normalize(train_data,axis=0)
-
-  #I think we need a new way of normalizing
-  #no data should be over 4000 watts
-  train_data = train_data/4000
-
-
 
   #shuffle the training data and labels
   train_data, train_labels, train_ids = sk.utils.shuffle(train_data,train_labels,train_ids,random_state = 5)
@@ -113,19 +116,27 @@ def main(_):
   class_weights = tf.constant(weight_vector,dtype=tf.float32)
 
   #generate two placeholder arrays for training and labels
-  x = tf.placeholder(tf.float32, shape=[None, len(train_data[0])])
+  if(config.use_pf):
+    x = tf.placeholder(tf.float32, shape=[None, len(train_data[0]),2])
+    x_data = tf.reshape(x,[-1,len(train_data[0]),2,1])
+  else:
+    x = tf.placeholder(tf.float32, shape=[None, len(train_data[0])])
+    x_data = tf.reshape(x,[-1,len(train_data[0]),1,1])
+
   y_ = tf.placeholder(tf.int32, shape=[None,1])
   ids = tf.placeholder(tf.int32, shape=[None,1])
 
 
-  x_data = tf.reshape(x,[-1,len(train_data[0]),1,1])
 
   #let's start by doing a pooling layer because this data is huge
   pre_pool = tf.nn.max_pool(x_data, ksize=[1,config.pre_pool_size,1,1], strides=[1,config.pre_pool_stride,1,1], padding='SAME')
 
-
   #do the first convolutional layer
-  W_conv1 = weight_variable([config.conv1_filter_size,1,1,config.conv1_num_filters])
+  if(config.use_pf):
+    W_conv1 = weight_variable([config.conv1_filter_size,2,1,config.conv1_num_filters])
+  else:
+    W_conv1 = weight_variable([config.conv1_filter_size,1,1,config.conv1_num_filters])
+
   b_conv1 = bias_variable([config.conv1_num_filters])
 
   conv1 = tf.nn.conv2d(pre_pool, W_conv1, strides=[1,1,1,1], padding='SAME')
@@ -135,7 +146,11 @@ def main(_):
   pool1 = tf.nn.max_pool(conv1_out, ksize=[1,config.pool1_size,1,1], strides=[1,config.pool1_stride,1,1], padding='SAME')
 
   #layer two convolution 100x32 - 64filters
-  W_conv2 = weight_variable([config.conv2_filter_size,1,config.conv1_num_filters,config.conv2_num_filters])
+  if(config.use_pf):
+    W_conv2 = weight_variable([config.conv2_filter_size,2,config.conv1_num_filters,config.conv2_num_filters])
+  else:
+    W_conv2 = weight_variable([config.conv2_filter_size,1,config.conv1_num_filters,config.conv2_num_filters])
+
   b_conv2 = bias_variable([config.conv2_num_filters])
 
   conv2 = tf.nn.conv2d(pool1, W_conv2, strides=[1,1,1,1], padding='SAME')
@@ -145,11 +160,18 @@ def main(_):
   pool2 = tf.nn.max_pool(conv2_out, ksize=[1,config.pool2_size,1,1], strides=[1,config.pool2_stride,1,1], padding='SAME')
 
   #data size should now be 1x216x64 filters
-  W_fc1 = weight_variable([(int(len(train_data[0])/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters),config.hidden1_size])
+  if(config.use_pf):
+    W_fc1 = weight_variable([(int((len(train_data[0])*2)/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters),config.hidden1_size])
+  else:
+    W_fc1 = weight_variable([(int(len(train_data[0])/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters),config.hidden1_size])
+
   b_fc1 = bias_variable([config.hidden1_size])
 
   #I think the data should already be flat but this call is probably cheap
-  pool2_flat = tf.reshape(pool2,[-1,int((len(train_data[0])/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters)])
+  if(config.use_pf):
+    pool2_flat = tf.reshape(pool2,[-1,int(((len(train_data[0])*2)/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters)])
+  else:
+    pool2_flat = tf.reshape(pool2,[-1,int((len(train_data[0])/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters)])
 
   #first hidden layer
   h1 = tf.nn.relu(tf.matmul(pool2_flat,W_fc1)+b_fc1)

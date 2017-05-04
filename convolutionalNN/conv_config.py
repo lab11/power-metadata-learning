@@ -1,13 +1,16 @@
 #data and labels
-model_save_path = "./checkpoint1/model.ckpt"
-train_data = "../data/sets/train.npy"
-train_labels = "../data/sets/trainLabels.npy"
-train_ids = "../data/sets/trainID.npy"
-test_data = "../data/sets/unseen.npy"
-test_labels = "../data/sets/unseenLabels.npy"
-test_ids = "../data/sets/unseenID.npy"
+model_save_path = "./dev9/model.ckpt"
+train_data = "../data/dev9/train.npy"
+train_labels = "../data/dev9/trainLabels.npy"
+train_ids = "../data/dev9/trainID.npy"
+test_data = "../data/dev9/unseen.npy"
+test_labels = "../data/dev9/unseenLabels.npy"
+test_ids = "../data/dev9/unseenID.npy"
 
-test = False
+test = True
+
+#add_pf
+use_pf = True
 
 #the size of the first max pooling layer
 pre_pool_size = 10
