@@ -36,8 +36,10 @@ def main(_):
   train_labels = np.load(config.train_labels)
   train_ids = np.load(config.train_ids)
 
+  test = False
   if(hasattr(config, 'test')):
     if(config.test):
+      test = True
       test_data = np.load(config.test_data)
       test_data = test_data[:,:,0]
       #test_data = skp.normalize(test_data,axis=0)
@@ -58,6 +60,8 @@ def main(_):
   #no data should be over 4000 watts
   train_data = train_data/4000
 
+
+
   #shuffle the training data and labels
   train_data, train_labels, train_ids = sk.utils.shuffle(train_data,train_labels,train_ids,random_state = 5)
 
@@ -68,14 +72,6 @@ def main(_):
   train_data_validate = train_data[int(len(train_data)*0.8):]
   train_labels_validate = train_labels[int(len(train_data)*0.8):]
   train_ids_validate = train_ids[int(len(train_data)*0.8):]
-
-
-  #create an inverse logits ratio to scale the training to the number
-  #of representations in the set
-  bins, counts = np.unique(train_labels_train,return_counts=True)
-  rep_sum = np.sum(counts)
-  num_classes = len(bins)
-  weight_vector = np.zeros(num_classes)
 
   id_to_label = np.zeros(num_ids+1)
 
@@ -96,13 +92,25 @@ def main(_):
 
   id_to_lab = tf.constant(id_to_label,dtype=tf.int64)
 
+  #create an inverse logits ratio to scale the training to the number
+  #of representations in the set
+  bins, counts = np.unique(train_labels_train,return_counts=True)
+  rep_sum = np.sum(counts)
+  num_classes = len(bins)
+  weight_vector = np.zeros(num_classes)
+
   for i in range(0,len(counts)):
-    weight_vector[i] = 1-(counts[i]/rep_sum)
+    weight_vector[i] = (1/num_classes)/counts[i]
+
+  probability_vector = np.zeros(len(train_data_train))
+
+  for i in range(0,len(probability_vector)):
+    probability_vector[i] = weight_vector[train_labels_train[i]]
 
   # start a tensorflow seesion
   sess = tf.InteractiveSession()
 
-  class_weights = tf.constant(weight_vector)
+  class_weights = tf.constant(weight_vector,dtype=tf.float32)
 
   #generate two placeholder arrays for training and labels
   x = tf.placeholder(tf.float32, shape=[None, len(train_data[0])])
@@ -157,7 +165,8 @@ def main(_):
 
 
   #weight the outputs to inverse class frequency
-  y_w = tf.multiply(y,tf.cast(class_weights,tf.float32))
+  #y_w = tf.multiply(y,tf.cast(class_weights,tf.float32))
+  y_w = y
 
   #now calculate cross entropy on weighted inputs
   y_ = tf.reshape(y_,[-1])
@@ -201,7 +210,7 @@ def main(_):
   for i in range(20000):
     #get a batch of 100 random training points from the training set
     batch_size = 50
-    batch_nums = np.random.choice(len(train_data_train[:,0]),batch_size)
+    batch_nums = np.random.choice(len(train_data_train[:,0]),batch_size,p=probability_vector)
     test_nums = np.random.choice(len(train_data_train[:,0]),2000)
     sys.stdout.write("Batch {}".format(i))
     sys.stdout.flush()
@@ -227,12 +236,11 @@ def main(_):
 
       saver.save(sess, config.model_save_path)
 
-      if(hasattr(config,'test')):
-        if(config.test):
-          test_accuracy, test_grouped, test_confusion = sess.run([accuracy,grouped_accuracy,confusion_matrix],
-                        feed_dict={x:test_data, y_: test_labels, ids: test_ids})
-          print("Test accuracy: {}, test accuracy grouped: {}".format(test_accuracy,test_grouped))
-          print(test_confusion)
+      if(test):
+        test_accuracy, test_grouped, test_confusion = sess.run([accuracy,grouped_accuracy,confusion_matrix],
+                      feed_dict={x:test_data, y_: test_labels, ids: test_ids})
+        print("Test accuracy: {}, test accuracy grouped: {}".format(test_accuracy,test_grouped))
+        print(test_confusion)
 
     #then train on the batch
     train_step.run(feed_dict={x: train_data_train[batch_nums], y_: train_labels_train[batch_nums]})
