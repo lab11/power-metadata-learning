@@ -32,11 +32,13 @@ def main(_):
   # Import data
   #import the data from the training numpy array
   train_data = np.load(config.train_data)
-  if(~config.use_pf):
+
+  if(config.use_pf == True):
+    train_data[:,:,0] = train_data[:,:,0]/4000
+  else:
     train_data = train_data[:,:,0]
     train_data = train_data/4000
-  else:
-    train_data[:,:,0] = train_data[:,:,0]/4000
+
 
   train_labels = np.load(config.train_labels)
   train_ids = np.load(config.train_ids)
@@ -46,7 +48,7 @@ def main(_):
     if(config.test):
       test = True
       test_data = np.load(config.test_data)
-      if(~config.use_pf):
+      if(config.use_pf == False):
         test_data = test_data[:,:,0]
         test_data = test_data/4000
       else:
@@ -116,7 +118,7 @@ def main(_):
   class_weights = tf.constant(weight_vector,dtype=tf.float32)
 
   #generate two placeholder arrays for training and labels
-  if(config.use_pf):
+  if(config.use_pf == True):
     x = tf.placeholder(tf.float32, shape=[None, len(train_data[0]),2])
     x_data = tf.reshape(x,[-1,len(train_data[0]),2,1])
   else:
@@ -132,7 +134,7 @@ def main(_):
   pre_pool = tf.nn.max_pool(x_data, ksize=[1,config.pre_pool_size,1,1], strides=[1,config.pre_pool_stride,1,1], padding='SAME')
 
   #do the first convolutional layer
-  if(config.use_pf):
+  if(config.use_pf == True):
     W_conv1 = weight_variable([config.conv1_filter_size,2,1,config.conv1_num_filters])
   else:
     W_conv1 = weight_variable([config.conv1_filter_size,1,1,config.conv1_num_filters])
@@ -146,7 +148,7 @@ def main(_):
   pool1 = tf.nn.max_pool(conv1_out, ksize=[1,config.pool1_size,1,1], strides=[1,config.pool1_stride,1,1], padding='SAME')
 
   #layer two convolution 100x32 - 64filters
-  if(config.use_pf):
+  if(config.use_pf == True):
     W_conv2 = weight_variable([config.conv2_filter_size,2,config.conv1_num_filters,config.conv2_num_filters])
   else:
     W_conv2 = weight_variable([config.conv2_filter_size,1,config.conv1_num_filters,config.conv2_num_filters])
@@ -160,7 +162,7 @@ def main(_):
   pool2 = tf.nn.max_pool(conv2_out, ksize=[1,config.pool2_size,1,1], strides=[1,config.pool2_stride,1,1], padding='SAME')
 
   #data size should now be 1x216x64 filters
-  if(config.use_pf):
+  if(config.use_pf == True):
     W_fc1 = weight_variable([(int((len(train_data[0])*2)/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters),config.hidden1_size])
   else:
     W_fc1 = weight_variable([(int(len(train_data[0])/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters),config.hidden1_size])
@@ -168,7 +170,7 @@ def main(_):
   b_fc1 = bias_variable([config.hidden1_size])
 
   #I think the data should already be flat but this call is probably cheap
-  if(config.use_pf):
+  if(config.use_pf == True):
     pool2_flat = tf.reshape(pool2,[-1,int(((len(train_data[0])*2)/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters)])
   else:
     pool2_flat = tf.reshape(pool2,[-1,int((len(train_data[0])/config.pre_pool_size/config.pool1_size/config.pool2_size)*config.conv2_num_filters)])
