@@ -198,6 +198,9 @@ def main(_):
   one_hot_labels = tf.one_hot(id_to_lab,num_classes)
   confusion_matrix = tf.matmul(one_hot_votes,one_hot_labels)
 
+  #this allows us to show a day-by-day confusion matrix
+  day_confusion_matrix = tf.matmul(tf.transpose(votes),one_hot_labels)
+
   saver = tf.train.Saver()
 
   if(len(glob.glob(config.model_save_path + ".*")) > 0):
