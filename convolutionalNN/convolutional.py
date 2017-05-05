@@ -106,7 +106,7 @@ def main(_):
   num_classes = len(bins)
   num_devs = len(id_bins)
   weight_vector = np.zeros(num_classes)
-  id_weight_vector = np.zeros(np.max(train_ids_train))
+  id_weight_vector = np.zeros(np.max(train_ids_train)+1)
 
   for i in range(0,len(counts)):
     weight_vector[i] = (1/num_classes)/counts[i]
