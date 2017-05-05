@@ -100,9 +100,13 @@ def main(_):
   #create an inverse logits ratio to scale the training to the number
   #of representations in the set
   bins, counts = np.unique(train_labels_train,return_counts=True)
+  id_bins, id_counts = np.unique(train_ids_train,return_counts=True)
   rep_sum = np.sum(counts)
+  id_rep_sum = np.sum(id_counts)
   num_classes = len(bins)
+  num_devs = len(id_bins)
   weight_vector = np.zeros(num_classes)
+  id_weight_vector = np.zeros(num_devs)
 
   for i in range(0,len(counts)):
     weight_vector[i] = (1/num_classes)/counts[i]
@@ -111,6 +115,14 @@ def main(_):
 
   for i in range(0,len(probability_vector)):
     probability_vector[i] = weight_vector[train_labels_train[i]]
+
+  for i in range(0,len(id_counts)):
+    id_weight_vector[i] = (1/num_devs)/id_counts[i]
+
+  id_probability_vector = np.zeros(len(train_data_train))
+
+  for i in range(0,len(id_probability_vector)):
+    id_probability_vector[i] = id_weight_vector[train_ids_train[i]]
 
   # start a tensorflow seesion
   sess = tf.InteractiveSession()
@@ -237,7 +249,7 @@ def main(_):
   for i in range(20000):
     #get a batch of 100 random training points from the training set
     batch_size = 50
-    batch_nums = np.random.choice(len(train_data_train[:,0]),batch_size,p=probability_vector)
+    batch_nums = np.random.choice(len(train_data_train[:,0]),batch_size,p=id_probability_vector)
     test_nums = np.random.choice(len(train_data_train[:,0]),2000)
     sys.stdout.write("Batch {}".format(i))
     sys.stdout.flush()
