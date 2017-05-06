@@ -14,7 +14,7 @@ import subprocess
 import glob
 import matplotlib.pyplot as plt
 
-SEC_IN_DAY = 24*60*60
+SEC_IN_DAY = 60*60
 
 seenTestRatio = .2
 unseenTestRatio = .2
@@ -99,8 +99,15 @@ for dataFile in dataFiles:
         labelToID[label].append(devid)
         data = split_data(np.load(args.inputdir + '/' + dataFile))
         maximum = np.amax(data[:,:,0], 1)
-        keep = maximum > 3
-        labelToData[label].append(data[keep])
+        maxofmax = np.amax(maximum)
+        keep = np.logical_and(maximum > (maxofmax * .1), maximum > 5)
+        if label == 'Light':
+            keep = np.logical_and(keep, maximum > 10)
+        keptdata = data[keep]
+        #print('{}, {}'.format(devid, label))
+        #print(np.amax(keptdata[:,:,0], 1))
+        if(data[keep].shape[0] > 0):
+            labelToData[label].append(data[keep])
     else:
         print("Warning: No label for {}".format(dataFile))
 
@@ -108,19 +115,36 @@ print("Found following data files:")
 
 for key in labelToFilenames:
     numFiles = len(labelToFilenames[key])
-    print("{}: {} files".format(key,numFiles))
-
+    mindays = None
+    maxdays = None
+    totaldays = []
+    for device in labelToData[key]:
+        numdays = device.shape[0]
+        totaldays.append(numdays)
+        if mindays is None:
+            mindays = maxdays = numdays
+            continue
+        if mindays > numdays: mindays = numdays
+        if maxdays < numdays: maxdays = numdays
+    mediandays= np.median(totaldays)
+    print("{}: {} files".format(key,len(totaldays)))
+    totaldays= np.sum(totaldays)
+    print("  number of days {}".format(totaldays))
+    print("  max of days    {}".format(maxdays))
+    print("  min of days    {}".format(mindays))
+    print("  median of days {}".format(mediandays))
 labelToUnseen = {}
 labelToUnseenID = {}
 labelToTrain = {}
 labelToTrainID = {}
 
 print('\nGenerate unseen set')
+totalPoints = 0
 for key in labelToFilenames:
-    numFiles = len(labelToFilenames[key])
-    if numFiles <= 2:
-        print('No files for label ' + key + ', skipping...')
-        continue
+    numFiles = len(labelToData[key])
+    #if numFiles <= 2:
+    #    print('No files for label ' + key + ', skipping...')
+    #    continue
     print('Attempting to partition ' + key)
 
     devices = labelToData[key]
@@ -130,7 +154,7 @@ for key in labelToFilenames:
         numPoints = 0
         for data in devices:
             numPoints += data.shape[0]*data.shape[1]
-
+            totalPoints += numPoints
         numTries = 0
         while numTries < 1000:
             pick = np.random.choice(numFiles, int(np.ceil(numFiles * unseenTestRatio)), False)
@@ -164,12 +188,12 @@ for key in labelToFilenames:
         labelToTrainID[key] = []
         for i in range(len(devices)):
             if deviceids[i] in houseUniqueID:
-                devcount += 1
                 labelToUnseen[key].append(devices[i])
                 labelToUnseenID[key].append(deviceids[i])
             else:
                 labelToTrain[key].append(devices[i])
                 labelToTrainID[key].append(deviceids[i])
+print(totalPoints)
 
 labelToTest = {}
 labelToTestID = {}
@@ -227,9 +251,9 @@ print(unseenID.shape)
 np.save(args.outputdir + '/' + 'train', train)
 np.save(args.outputdir + '/' + 'trainLabels', trainLabels)
 np.save(args.outputdir + '/' + 'trainID', trainID)
-np.save(args.outputdir + '/' + 'test', train)
-np.save(args.outputdir + '/' + 'testLabels', trainLabels)
-np.save(args.outputdir + '/' + 'testID', trainID)
+np.save(args.outputdir + '/' + 'test', test)
+np.save(args.outputdir + '/' + 'testLabels', testLabels)
+np.save(args.outputdir + '/' + 'testID', testID)
 np.save(args.outputdir + '/' + 'unseen', unseen)
 np.save(args.outputdir + '/' + 'unseenLabels', unseenLabels)
 np.save(args.outputdir + '/' + 'unseenID', unseenID)
