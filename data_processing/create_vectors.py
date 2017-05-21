@@ -99,42 +99,39 @@ for dataFile in dataFiles:
 data = []
 for key in labelToFilenames:
     print(key)
-    features = OrderedDict()
-    mindays = None
-    maxdays = None
-    totaldays = []
     for i,device in enumerate(labelToData[key]):
         print('{}/{}'.format(i, len(labelToData[key])))
-        features['deviceType'] = key
-        features['avgPwr'] = np.mean(device[:,:,0])
-        features['varPwr'] = np.var(device[:,:,0])
-        features['maxPwr'] = maxPwr = np.max(device[:,:,0])
-        features['minPwr']= np.min(device[:,:,0])
-        if (maxPwr > 10):
-            count = np.sum(device[:,:,0] > maxPwr*0.1)
-        else:
-            count = np.sum(device[:,:,0] > maxPwr*0.5)
-        features['duty'] = device.shape[0]/count
-
-        # calculate deltas
-        dat = OrderedDict()
-        dat['5'] =      [0,0]
-        dat['10'] =     [0,0]
-        dat['15'] =     [0,0]
-        dat['25'] =     [0,0]
-        dat['50'] =     [0,0]
-        dat['75'] =     [0,0]
-        dat['100'] =    [0,0]
-        dat['150'] =    [0,0]
-        dat['250'] =    [0,0]
-        dat['500'] =    [0,0]
-
-        curPow = 0
-        last_real_delta = 0
-        prev_delta= 0
-        curSeq = 0
-        totalCt = 0
         for day in device[:,:,0]:
+            features = OrderedDict()
+            features['deviceType'] = key
+            features['avgPwr'] = np.mean(day)
+            features['varPwr'] = np.var(day)
+            features['maxPwr'] = maxPwr = np.max(day)
+            features['minPwr']= np.min(day)
+            if (maxPwr > 10):
+                count = np.sum(day > maxPwr*0.1)
+            else:
+                count = np.sum(day > maxPwr*0.5)
+            features['duty'] = count/len(day)
+
+            # calculate deltas
+            dat = OrderedDict()
+            dat['5'] =      [0,0]
+            dat['10'] =     [0,0]
+            dat['15'] =     [0,0]
+            dat['25'] =     [0,0]
+            dat['50'] =     [0,0]
+            dat['75'] =     [0,0]
+            dat['100'] =    [0,0]
+            dat['150'] =    [0,0]
+            dat['250'] =    [0,0]
+            dat['500'] =    [0,0]
+
+            curPow = 0
+            last_real_delta = 0
+            prev_delta= 0
+            curSeq = 0
+            totalCt = 0
             for power in day:
                 if curPow == 0:
                     curPow = power
@@ -174,7 +171,7 @@ for key in labelToFilenames:
                 features['ct' + bins] = dat[bins][0]
                 features['spk' + bins] = dat[bins][1]
 
-            data.append(features)
+            data.append(features.copy())
 
 print('Writing to csv at ' + args.outputdir)
 
