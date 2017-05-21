@@ -101,8 +101,10 @@ for key in labelToFilenames:
     print(key)
     for i,device in enumerate(labelToData[key]):
         print('{}/{}'.format(i, len(labelToData[key])))
+        devid = labelToID[key][i]
         for day in device[:,:,0]:
             features = OrderedDict()
+            features['id'] = devid
             features['deviceType'] = key
             features['avgPwr'] = np.mean(day)
             features['varPwr'] = np.var(day)
